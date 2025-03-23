@@ -24,7 +24,7 @@
 }
 .friend-account button {
   width: 100px;
-  background-color: #9a67ea;;
+  background-color: #9a67ea;
   color: #000;
   cursor: pointer;
   transition: background-color var(--transition-duration);
@@ -45,4 +45,20 @@
   padding: 0.75rem;
   border-radius: var(--border-radius);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+.friend-balance{
+  font-size: 1.3em;
+  font-weight: 600;
+  color: #BB86FC;
+}
+
+.font-20px{
+  font-size: 20px;
+}
+
+.mb-30px{
+  margin-bottom: 30px;
+}
+.mb-10px{
+  margin-bottom: 10px;
 }

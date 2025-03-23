@@ -20,11 +20,11 @@ function FriendAccount({ friend, refresh }) {
 
   return (
     <div className="friend-account">
-      <h2 className="friend-name">{friend.name}'s Account</h2>
-      <p className="friend-balance">Current Balance: ₹{friend.balance}</p>
+      <h2 className="friend-name">{friend.name}<span className='white'>&nbsp;'s Account</span></h2>
+      <p className='white font-20px mb-30px'>Current Balance: <span className="friend-balance">₹{friend.balance}</span></p>
 
       <div className="transaction-section">
-        <h4>Add/Subtract Money</h4>
+        <h4 className='mb-10px'>Add/Subtract Money</h4>
         <input
           type="number"
           className="input-field"

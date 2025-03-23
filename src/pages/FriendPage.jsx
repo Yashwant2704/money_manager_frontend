@@ -32,8 +32,8 @@ function FriendPage() {
         <div className="center">
         <Triangle
         visible={true}
-        height="80"
-        width="80"
+        height="150"
+        width="150"
         color="#984bf7"
         ariaLabel="triangle-loading"
         wrapperStyle={{}}

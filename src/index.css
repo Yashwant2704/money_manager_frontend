@@ -61,3 +61,7 @@ input:focus, textarea:focus {
   align-items: center;
   justify-content: center;
  }
+
+ .white{
+  color: white;
+ }
