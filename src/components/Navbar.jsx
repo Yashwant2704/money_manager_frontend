@@ -4,7 +4,8 @@ import './Navbar.css';
 function Navbar() {
   return (
     <nav className="navbar">
-      <div className="navbar-title">💸 Money Manager</div>
+      <Link className="navbar-link" to="/"><div className="navbar-title">💸 Money Manager</div></Link>
+      
       <Link className="navbar-link" to="/">Home</Link>
     </nav>
   );
