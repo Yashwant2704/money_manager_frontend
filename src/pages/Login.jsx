@@ -8,7 +8,7 @@ function Login() {
         e.preventDefault()
         if(e.target.username.value === 'yashwantnagarkar04@gmail.com' && e.target.password.value === 'Yjn@270304') {
             localStorage.setItem('token', 'true')
-            alert('Login Successful');
+            // alert('Login Successful');
             navigate('/');
 
         } else {
