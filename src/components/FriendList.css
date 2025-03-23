@@ -24,3 +24,21 @@
 .friend-list li span {
   color: var(--accent-color);
 }
+
+.friend-list-total{
+  font-size: 1.5rem;
+  display: flex;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+  gap: 20px;
+  color: #BB86FC;
+  p{
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.total{
+  font-size: 2rem;
+ }
