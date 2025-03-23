@@ -1,9 +1,10 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import Home from './pages/Home';
 import FriendPage from './pages/FriendPage';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
-import { useEffect } from 'react';
+import Footer from './components/Footer';
 
 import './App.css';
 
@@ -25,6 +26,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/friend/:id" element={<FriendPage />} />
       </Routes>
+      <Footer />
     </div>
   );
 }
