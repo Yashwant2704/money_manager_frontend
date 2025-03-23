@@ -88,7 +88,7 @@ function FriendAccount({ friend, refresh }) {
             {friend.transactions.map((txn, index) => (
               <tr key={index}>
                 <td>{new Date(txn.date).toLocaleDateString()}</td>
-                <td>₹{txn.amount}</td>
+                <td>₹&nbsp;{txn.amount}</td>
                 <td>{txn.note}</td>
               </tr>
             ))}

@@ -23,6 +23,7 @@
     border-color: #BB86FC;
 }
 .friend-account button {
+  font-size: 0.8em;
   width: 100px;
   background-color: #9a67ea;
   color: #000;
@@ -71,7 +72,7 @@
   border-collapse: collapse;
   margin-top: 1rem;
   background-color: #1F1B24;
-  color: #BB86FC;
+  /* color: #BB86FC; */
   border-radius: 0.5em;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
@@ -93,10 +94,6 @@
 .transactions-table tr:hover {
   background-color: #2b2535;
   transition: background-color 0.3s ease;
-}
-
-.transactions-table td {
-  color: #BB86FC;
 }
 
 .transactions-table td:first-child,
