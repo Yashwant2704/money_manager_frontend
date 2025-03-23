@@ -42,3 +42,9 @@
 .total{
   font-size: 2rem;
  }
+
+ .friend-list-title{
+  margin: 0.6em 0;
+  padding: 0;
+  font-size: 2rem;
+ }
