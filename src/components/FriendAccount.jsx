@@ -47,13 +47,32 @@ function FriendAccount({ friend, refresh }) {
 
       <div className="transaction-history">
         <h4>Transaction History:</h4>
-        <ul>
+        {/* <ul>
           {friend.transactions.map((txn, index) => (
             <li key={index}>
-              {new Date(txn.date).toLocaleDateString()} - ₹{txn.amount} ({txn.note})
+              <span className="date">{new Date(txn.date).toLocaleDateString()}</span>  <span className="amount">₹{txn.amount}</span> ({txn.note})
             </li>
           ))}
-        </ul>
+        </ul> */}
+        <table className="transactions-table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Amount (₹)</th>
+      <th>Note</th>
+    </tr>
+  </thead>
+  <tbody>
+    {friend.transactions.map((txn, index) => (
+      <tr key={index}>
+        <td>{new Date(txn.date).toLocaleDateString()}</td>
+        <td>₹{txn.amount}</td>
+        <td>{txn.note}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
       </div>
     </div>
   );

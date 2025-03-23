@@ -40,6 +40,8 @@
 }
 
 .friend-account li {
+  display: flex;
+  justify-content: space-between;
   background-color: var(--primary-color);
   margin-top: 0.75rem;
   padding: 0.75rem;
@@ -61,4 +63,68 @@
 }
 .mb-10px{
   margin-bottom: 10px;
+}
+
+
+.transactions-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background-color: #1F1B24;
+  color: #BB86FC;
+  border-radius: 0.5em;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.transactions-table th, .transactions-table td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid #984bf7;
+}
+
+.transactions-table th {
+  background: linear-gradient(90deg, #831dff90, #984bf7);
+  color: #fff;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.transactions-table tr:hover {
+  background-color: #2b2535;
+  transition: background-color 0.3s ease;
+}
+
+.transactions-table td {
+  color: #BB86FC;
+}
+
+.transactions-table td:first-child,
+.transactions-table th:first-child {
+  border-left: none;
+}
+
+.transactions-table td:last-child,
+.transactions-table th:last-child {
+  border-right: none;
+}
+
+@media screen and (max-width: 768px) {
+  .transactions-table th, .transactions-table td {
+    padding: 10px 10px;
+    text-align: left;
+    border-bottom: 1px solid #984bf7;
+  }
+  
+  .transactions-table th {
+    background: linear-gradient(90deg, #831dff90, #984bf7);
+    color: #fff;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  .friend-account input {
+    font-size: 12px;
+    padding: 15px;
+  }
 }
