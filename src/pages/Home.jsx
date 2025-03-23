@@ -10,8 +10,8 @@ function Home() {
 
   return (
     <div className="home">
-      <AddFriendForm refresh={triggerRefresh} />
       <FriendList refreshTrigger={refreshTrigger} />
+      <AddFriendForm refresh={triggerRefresh} />
     </div>
   );
 }
