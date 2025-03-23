@@ -24,7 +24,7 @@ function AddFriendForm({ refresh }) {
         className="input-field"
         onChange={(e) => setName(e.target.value)}
       />
-      <button className="btn add-btn" onClick={handleAdd}>Add Friend</button>
+      <button onClick={handleAdd}>Add Friend</button>
     </div>
   );
 }

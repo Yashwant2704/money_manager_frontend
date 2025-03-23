@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import axios from "axios";
 import { Triangle } from "react-loader-spinner";
 import "./FriendAccount.css";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 function FriendAccount({ friend, refresh }) {
   const [amount, setAmount] = useState("");
@@ -28,8 +30,36 @@ function FriendAccount({ friend, refresh }) {
       .catch((err) => console.error(err));
   };
 
+  const printRef = useRef(null);
+
+  const handlePrint = async () => {
+    // console.log(printRef.current);
+    const element = printRef.current;
+    if (!element) return;
+    const canvas = await html2canvas(element,{
+      scale: 2
+    });
+    const data = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "px",
+      format: "a4",
+    });
+
+    const imgProperties = pdf.getImageProperties(data);
+    // console.log(imgProperties);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+
+    pdf.addImage(data, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save("Balance.pdf");
+  };
+
   return (
     <div className="friend-account">
+
+    <div className="account" ref={printRef}>
       <h2 className="friend-name">
         {friend.name}
         <span className="white">&nbsp;'s Account</span>
@@ -82,37 +112,42 @@ function FriendAccount({ friend, refresh }) {
         </ul> */}
         {loading && (
           <div className="center">
-          <Triangle
-          visible={true}
-          height="80"
-          width="80"
-          color="#984bf7"
-          ariaLabel="triangle-loading"
-          wrapperStyle={{}}
-          wrapperClass=""
-          />
+            <Triangle
+              visible={true}
+              height="80"
+              width="80"
+              color="#984bf7"
+              ariaLabel="triangle-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+            />
           </div>
         )}
-      {!loading && (  <table className="transactions-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Amount (₹)</th>
-              <th>Note</th>
-            </tr>
-          </thead>
-          <tbody>
-            {friend.transactions.map((txn, index) => (
-              <tr key={index}>
-                <td>{new Date(txn.date).toLocaleDateString()}</td>
-                <td>₹&nbsp;{txn.amount}</td>
-                <td>{txn.note}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {!loading && (
+          <div>
+            <table className="transactions-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Amount (₹)</th>
+                  <th>Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                {friend.transactions.map((txn, index) => (
+                  <tr key={index}>
+                    <td>{new Date(txn.date).toLocaleDateString()}</td>
+                    <td>₹&nbsp;{txn.amount}</td>
+                    <td>{txn.note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
+    </div>
+        {/* <button onClick={handlePrint}>Print</button> */}
     </div>
   );
 }
