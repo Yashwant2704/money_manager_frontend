@@ -1,0 +1,26 @@
+/* FriendList.css */
+.friend-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.friend-list li {
+  background-color: var(--primary-color);
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color var(--transition-duration);
+  cursor: pointer;
+}
+
+.friend-list li:hover {
+  background-color: var(--hover-color);
+  border-color: #BB86FC;
+}
+
+.friend-list li span {
+  color: var(--accent-color);
+}

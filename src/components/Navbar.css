@@ -1,0 +1,23 @@
+/* Navbar.css */
+.navbar {
+  background-color: var(--primary-color);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.navbar h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.navbar a {
+  color: var(--text-color);
+  margin-left: 1rem;
+}
+
+.navbar a:hover {
+  color: var(--accent-color);
+}

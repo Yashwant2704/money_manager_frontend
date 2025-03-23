@@ -1,0 +1,12 @@
+/* variables.css */
+:root {
+    --background-color: #121212;
+    --primary-color: #1f1f1f;
+    --secondary-color: #272727;
+    --text-color: #e0e0e0;
+    --accent-color: #bb86fc;
+    --hover-color: #333333;
+    --border-radius: 8px;
+    --transition-duration: 0.3s;
+  }
+  

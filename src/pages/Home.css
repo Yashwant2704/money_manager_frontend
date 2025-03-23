@@ -1,0 +1,17 @@
+/* Home.css */
+.home {
+  padding: 2rem;
+}
+
+.home h2 {
+  color: var(--accent-color);
+}
+
+.home .add-friend-form,
+.home .friend-list {
+  background-color: var(--secondary-color);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}

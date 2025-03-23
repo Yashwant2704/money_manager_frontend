@@ -1,0 +1,15 @@
+/* FriendPage.css */
+.friend-page {
+  padding: 2rem;
+}
+
+.friend-page h2 {
+  color: var(--accent-color);
+}
+
+.friend-page .friend-account {
+  background-color: var(--secondary-color);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}

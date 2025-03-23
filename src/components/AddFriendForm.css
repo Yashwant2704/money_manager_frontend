@@ -1,0 +1,23 @@
+/* AddFriendForm.css */
+.add-friend-form {
+    margin-top: 20px;
+  }
+  
+  .add-friend-form input {
+    color: white;
+    margin-right: 10px;
+    width: 60%;
+  }
+  
+  .add-friend-form button {
+    margin-top: 10px;
+  }
+  
+@media screen and (max-width: 600px) {
+  .add-friend-form input {
+    padding: 15px;
+  }
+  .add-friend-form input::placeholder {
+    font-size: 1.2em;
+  }
+}
