@@ -1,12 +1,15 @@
 import { useState } from "react";
 import axios from "axios";
+import { Triangle } from "react-loader-spinner";
 import "./FriendAccount.css";
 
 function FriendAccount({ friend, refresh }) {
   const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
   const [note, setNote] = useState("");
 
   const handleTransaction = (value) => {
+    setLoading(true);
     if (!amount) return alert("Enter amount");
     axios
       .post(
@@ -19,6 +22,7 @@ function FriendAccount({ friend, refresh }) {
       .then(() => {
         setAmount("");
         setNote("");
+        setLoading(false);
         refresh();
       })
       .catch((err) => console.error(err));
@@ -76,7 +80,20 @@ function FriendAccount({ friend, refresh }) {
             </li>
           ))}
         </ul> */}
-        <table className="transactions-table">
+        {loading && (
+          <div className="center">
+          <Triangle
+          visible={true}
+          height="80"
+          width="80"
+          color="#984bf7"
+          ariaLabel="triangle-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          />
+          </div>
+        )}
+      {!loading && (  <table className="transactions-table">
           <thead>
             <tr>
               <th>Date</th>
@@ -94,6 +111,7 @@ function FriendAccount({ friend, refresh }) {
             ))}
           </tbody>
         </table>
+        )}
       </div>
     </div>
   );

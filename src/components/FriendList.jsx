@@ -23,16 +23,20 @@ function FriendList({ refreshTrigger }) {
     getFriends();
   }, [refreshTrigger]);
 
-  let total = 0;
+  let totalGetBack = 0;
+  let totalOweOthers = 0;
   for(let friend of friends){
-    total = total + friend.balance;
+    totalGetBack = totalGetBack + friend.balance;
+    if(friend.balance < 0){ totalOweOthers = totalOweOthers + friend.balance; }
   }
 
   return (
     <div className="friend-list">
       <h2 className="friend-list-title">Friends</h2>
-      {total>0 && ( <div className="friend-list-total"><p className="white">You get back </p><p className="total">₹{total}</p></div>)}
-      {total<0 && ( <div className="friend-list-total"><p className="white">You owe others </p><p className="total">₹{total*-1}</p></div>)}
+      <div className="verdict">
+     {!loading && ( <div className="friend-list-total"><p className="white">You get</p><p className="total get">₹{totalGetBack}</p></div>)}
+     {!loading && ( <div className="friend-list-total"><p className="white">You owe</p><p className="total owe">₹{totalOweOthers*-1}</p></div>)}
+      </div>
       {loading && (
         <div className="center">
         <Triangle

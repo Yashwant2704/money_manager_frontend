@@ -19,7 +19,7 @@ function App() {
 
   return (
     <div className="app dark-theme">
-      <Navbar />
+     {userLoggedIn &&( <Navbar />)}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

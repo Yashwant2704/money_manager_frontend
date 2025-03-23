@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+    <defs>
+        <style>.cls-1{fill:#BB86FC;}</style>
+    </defs>
+    <title></title>
+    <g id="Layer_2" data-name="Layer 2">
+        <g id="layer_1-2" data-name="layer 1">
+            <rect class="cls-1" x="15" y="3" width="2" height="2" />
+            <rect class="cls-1" x="15" y="43" width="2" height="2" />
+            <rect class="cls-1" x="22" y="43" width="2" height="2" />
+            <rect class="cls-1" x="8" y="43" width="2" height="2" />
+            <path class="cls-1"
+                d="M29,48H3a3,3,0,0,1-3-3V3A3,3,0,0,1,3,0H29a3,3,0,0,1,3,3v7H30V3a1,1,0,0,0-1-1H3A1,1,0,0,0,2,3V45a1,1,0,0,0,1,1H29a1,1,0,0,0,1-1V36h2v9A3,3,0,0,1,29,48Z" />
+            <path class="cls-1"
+                d="M18,42H3a3,3,0,0,1-3-3V9A3,3,0,0,1,3,6H29a3,3,0,0,1,3,3H30a1,1,0,0,0-1-1H3A1,1,0,0,0,2,9V39a1,1,0,0,0,1,1H18Z" />
+            <path class="cls-1" d="M29,42H25V40h4a1,1,0,0,0,1-1h2A3,3,0,0,1,29,42Z" />
+            <path class="cls-1"
+                d="M34,30a4,4,0,0,1-4-4h2a2,2,0,1,0,2-2,4,4,0,1,1,4-4H36a2,2,0,1,0-2,2,4,4,0,0,1,0,8Z" />
+            <rect class="cls-1" x="33" y="29" width="2" height="3" />
+            <rect class="cls-1" x="33" y="14" width="2" height="3" />
+            <rect class="cls-1" x="40" y="22" width="2" height="2" />
+            <rect class="cls-1" x="26" y="22" width="2" height="2" />
+            <path class="cls-1"
+                d="M21,42a1.12,1.12,0,0,1-.31,0A1,1,0,0,1,20,41V23A14,14,0,1,1,34,37a13.86,13.86,0,0,1-7.36-2.1l-4.83,6.69A1,1,0,0,1,21,42ZM34,11A12,12,0,0,0,22,23V37.91l3.59-5a1,1,0,0,1,.65-.4,1,1,0,0,1,.74.18A12,12,0,1,0,34,11Z" />
+            <path class="cls-1"
+                d="M13,22H9a3,3,0,0,1-3-3V15a3,3,0,0,1,3-3h4a3,3,0,0,1,3,3v4A3,3,0,0,1,13,22ZM9,14a1,1,0,0,0-1,1v4a1,1,0,0,0,1,1h4a1,1,0,0,0,1-1V15a1,1,0,0,0-1-1Z" />
+            <path class="cls-1"
+                d="M13,36H9a3,3,0,0,1-3-3V29a3,3,0,0,1,3-3h4a3,3,0,0,1,3,3v4A3,3,0,0,1,13,36ZM9,28a1,1,0,0,0-1,1v4a1,1,0,0,0,1,1h4a1,1,0,0,0,1-1V29a1,1,0,0,0-1-1Z" />
+        </g>
+    </g>
+</svg>

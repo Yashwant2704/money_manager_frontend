@@ -48,3 +48,38 @@
   padding: 0;
   font-size: 2rem;
  }
+
+ .verdict{
+  display: flex;
+  gap: 2rem;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+ }
+
+ @media screen and (max-width: 768px) {
+  .verdict{
+    display: flex;
+    gap: 2.3rem;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+   }
+   .friend-list-total{
+    font-size: 1.3rem;
+    gap: 1rem;
+   }
+
+   .total{
+    font-size: 1.5rem;
+   }
+
+  }
+
+  .get{
+    color: rgb(30, 164, 30);
+  }
+
+  .owe{
+    color: rgb(240, 64, 64);
+  }

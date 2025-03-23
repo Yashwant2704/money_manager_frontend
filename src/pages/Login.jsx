@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import './Login.css'
+import logo from '../assets/money-logo.svg'
 
 function Login() {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ function Login() {
   return (
     <div className='Login'>
         <div className="login-container">
+          <img src={logo} alt="logo" className='logo-login' />
         <h1>Login</h1>
         <form className="login-form" onSubmit={handleSubmit}>
             <input className='login-input' type="text" name='username' placeholder="Username" />

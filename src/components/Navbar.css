@@ -28,3 +28,22 @@
 .navbar a:hover {
   color: var(--accent-color);
 }
+
+.logo-svg{
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  margin-left: 10px;
+ }
+
+ .navbar-title{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+ }
+
+ @media screen and (max-width: 768px) {
+  .navbar-title{
+    font-size: 1rem;
+   }
+  }
