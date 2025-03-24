@@ -19,6 +19,7 @@ function FriendList({ refreshTrigger }) {
       })
       .catch((err) => console.error(err));
   }
+  
   useEffect(() => {
     getFriends();
   }, [refreshTrigger]);
