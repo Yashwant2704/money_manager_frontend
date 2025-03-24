@@ -9,7 +9,7 @@ function TransactionPage() {
   const navigate = useNavigate();
   const getTransaction = async () => {
     axios
-      .get(`http://localhost:5000/api/friends/transaction/${id}`)
+      .get(`${import.meta.env.VITE_API_BASE}/friends/transaction/${id}`)
       .then((res) => {
         setTransaction(res.data);
       });
