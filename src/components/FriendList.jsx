@@ -25,29 +25,43 @@ function FriendList({ refreshTrigger }) {
 
   let totalGetBack = 0;
   let totalOweOthers = 0;
-  for(let friend of friends){
-    if(friend.balance < 0){ totalOweOthers = totalOweOthers + friend.balance; }
-    else totalGetBack = totalGetBack + friend.balance;
+  for (let friend of friends) {
+    if (friend.balance < 0) {
+      totalOweOthers = totalOweOthers + friend.balance;
+    } else totalGetBack = totalGetBack + friend.balance;
   }
 
   return (
     <div className="friend-list">
       <h2 className="friend-list-title">Friends</h2>
-      <div className="verdict">
-     {!loading && ( <div className="friend-list-total"><p className="white">You get</p><p className="total get">₹{totalGetBack}</p></div>)}
-     {!loading && ( <div className="friend-list-total"><p className="white">You owe</p><p className="total owe">₹{totalOweOthers*-1}</p></div>)}
-      </div>
+      {!loading && (
+        <div>
+        <div className="verdict">
+          <div className="friend-list-total">
+            <p className="white">You get</p>
+          </div>
+          <div className="friend-list-total">
+            <p className="white">You owe</p>
+          </div>
+        </div>
+        <div className="verdict verdict2">
+          <p className="total get">₹{totalGetBack}</p>
+          <p className="total owe">₹{totalOweOthers * -1}</p>
+        </div>
+        </div>
+
+      )}
       {loading && (
         <div className="center">
-        <Triangle
-        visible={true}
-        height="80"
-        width="80"
-        color="#984bf7"
-        ariaLabel="triangle-loading"
-        wrapperStyle={{}}
-        wrapperClass=""
-        />
+          <Triangle
+            visible={true}
+            height="80"
+            width="80"
+            color="#984bf7"
+            ariaLabel="triangle-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+          />
         </div>
       )}
       <ul className="friend-list-items">
