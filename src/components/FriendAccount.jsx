@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Triangle } from "react-loader-spinner";
 import "./FriendAccount.css";
@@ -9,6 +10,7 @@ function FriendAccount({ friend, refresh }) {
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [note, setNote] = useState("");
+  const navigate = useNavigate();
 
   const handleTransaction = (value) => {
     setLoading(true);
@@ -135,8 +137,8 @@ function FriendAccount({ friend, refresh }) {
               </thead>
               <tbody>
                 {friend.transactions.map((txn, index) => (
-                  <tr key={index}>
-                    <td>{new Date(txn.date).toLocaleDateString()}</td>
+                  <tr key={index} onClick={() => navigate(`/transaction/${txn._id}`)}>
+                    <td>{new Date(txn.date).toLocaleDateString('en-GB')}</td>
                     <td>₹&nbsp;{txn.amount}</td>
                     <td>{txn.note}</td>
                   </tr>

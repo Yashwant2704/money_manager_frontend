@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import FriendPage from './pages/FriendPage';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
+import TransactionPage from './pages/TransactionPage';
 import Footer from './components/Footer';
 
 import './App.css';
@@ -25,6 +26,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/friend/:id" element={<FriendPage />} />
+        <Route path="/transaction/:id" element={<TransactionPage />} />
       </Routes>
       <Footer />
     </div>

@@ -94,6 +94,10 @@
   letter-spacing: 1px;
 }
 
+.transactions-table tr{
+  cursor: pointer;
+}
+
 .transactions-table tr:hover {
   background-color: #2b2535;
   transition: background-color 0.3s ease;
