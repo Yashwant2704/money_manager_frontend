@@ -18,7 +18,7 @@ function TransactionPage() {
   const deleteTransaction = () => {
     if (confirm("Are you sure?")) {
       axios
-        .delete(`https://money-manager-api-krhz.onrender.com/friends/transaction/${id}`)
+        .delete(`https://money-manager-api-krhz.onrender.com/api/friends/transaction/${id}`)
         .then((res) => {
           window.history.back();
         })
