@@ -129,7 +129,7 @@ function FriendAccount({ friend, refresh }) {
               <thead>
                 <tr>
                   <th>Date</th>
-                  <th>Amount (₹)</th>
+                  <th>Amount</th>
                   <th>Note</th>
                 </tr>
               </thead>
