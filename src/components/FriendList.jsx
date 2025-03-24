@@ -26,8 +26,8 @@ function FriendList({ refreshTrigger }) {
   let totalGetBack = 0;
   let totalOweOthers = 0;
   for(let friend of friends){
-    totalGetBack = totalGetBack + friend.balance;
     if(friend.balance < 0){ totalOweOthers = totalOweOthers + friend.balance; }
+    else totalGetBack = totalGetBack + friend.balance;
   }
 
   return (
