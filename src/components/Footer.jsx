@@ -4,7 +4,7 @@ import './Footer.css'
 function Footer() {
   return (
     <div className="Footer">
-        <p>© 2023 </p><p className='light-purple'>Y-MoneyManager</p>
+        <p>© 2025 </p><p className='light-purple'>Y-MoneyManager</p>
     </div>
   )
 }

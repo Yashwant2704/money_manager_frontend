@@ -58,6 +58,9 @@ function TransactionPage() {
           <p className="light-purple">
             {new Date(transaction.date).toLocaleDateString("en-GB")}
           </p>
+          <p className="light-purple">
+            {new Date(transaction.date).toLocaleTimeString("en-US", {hour: '2-digit', minute:'2-digit'})}
+          </p>
         </div>
         <div>
           Transaction Amount:{" "}
