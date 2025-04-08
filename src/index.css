@@ -99,3 +99,11 @@ input:focus, textarea:focus {
  .light-purple{
   color: #BB86FC;
  }
+
+ .pt-20{
+  padding-top: 20px;
+ }
+
+ .flex-col{
+  flex-direction: column;
+ }
