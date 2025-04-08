@@ -61,7 +61,8 @@ function FriendAccount({ friend, refresh }) {
   };
 
   const ShowQr = () => {
-    !toggleQr && setQr(true);
+    if(!friend.balance) return alert("No balance");
+    !toggleQr && friend.balance > 0 && setQr(true);
     toggleQr && setQr(false);
   };
 
