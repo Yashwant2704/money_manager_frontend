@@ -163,7 +163,7 @@ function FriendAccount({ friend, refresh }) {
         <div className="btn-con">
           <button onClick={ShowQr}>Show QR</button>
         </div>
-      {toggleQr && (  <div className="qr-details pt-20">
+      {toggleQr && (  <div className="qr-details pt-30">
           <img src={qr} alt="qr" height={300} width={380} />
           <p className="white font-20px mb-30px center">
             Pay&nbsp;
