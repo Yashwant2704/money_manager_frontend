@@ -70,7 +70,7 @@ function FriendAccount({ friend, refresh }) {
     if (!friend.balance || friend.balance <= 0) return alert("No balance");
   
     axios
-      .post("https://money-manager-api-krhz.onrender.com:5000/api/email", {
+      .post("https://money-manager-api-krhz.onrender.com/api/email", {
         friend, // Pass entire friend object with transactions
       })
       .then(() => {
