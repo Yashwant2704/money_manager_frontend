@@ -113,6 +113,15 @@
   border-right: none;
 }
 
+.btn-con{
+  display: flex;
+  flex-direction: column;
+}
+
+.qr-details{
+  height: 23em;
+}
+
 @media screen and (max-width: 768px) {
   .transactions-table th, .transactions-table td {
     padding: 10px 10px;
