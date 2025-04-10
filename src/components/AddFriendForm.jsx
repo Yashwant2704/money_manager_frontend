@@ -4,12 +4,15 @@ import './AddFriendForm.css';
 
 function AddFriendForm({ refresh }) {
   const [name, setName] = useState('');
+  const [mail, setMail] = useState('');
 
   const handleAdd = () => {
     if (!name.trim()) return alert('Enter friend name');
-    axios.post(`${import.meta.env.VITE_API_BASE}/friends/add`, { name })
+    if (!mail.trim()) return alert('Enter friend email');
+    axios.post(`${import.meta.env.VITE_API_BASE}/friends/add`, { name, mail })
       .then(() => {
         setName('');
+        setMail('');
         refresh();
       }).catch(err => console.error(err));
   };
@@ -23,6 +26,13 @@ function AddFriendForm({ refresh }) {
         placeholder="Friend's Name"
         className="input-field"
         onChange={(e) => setName(e.target.value)}
+      />
+      <input
+        type="text"
+        value={mail}
+        placeholder="Friend's Email"
+        className="input-field"
+        onChange={(e) => setMail(e.target.value)}
       />
       <button onClick={handleAdd}>Add Friend</button>
     </div>

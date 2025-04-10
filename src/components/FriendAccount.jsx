@@ -126,7 +126,7 @@ function FriendAccount({ friend, refresh }) {
           },
           to: [
             {
-              email: "202202180@vupune.ac.in",
+              email: friend.mail,
             },
           ],
           subject: `Hey ${friend.name}, you owe me some money!`,
@@ -248,9 +248,9 @@ function FriendAccount({ friend, refresh }) {
       <div className="center flex-col pt-20">
         <div className="btn-con center">
           <button onClick={ShowQr}>Show QR</button>
-          {/* <button className="btn email-btn" onClick={handleSendEmail} style={{ width: '12em' }}>
+          <button className="btn email-btn" onClick={handleSendEmail} style={{ width: '12em' }}>
             Send Balance via Email
-          </button> */}
+          </button>
         </div>
         {toggleQr && (
           <div className="qr-details pt-20">
