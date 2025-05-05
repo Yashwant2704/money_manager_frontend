@@ -1,6 +1,6 @@
 /* FriendPage.css */
 .friend-page {
-  padding: 2rem 1rem;
+  padding: 3rem 1rem;
   /* margin-top: 100px; */
 }
 
@@ -17,7 +17,7 @@
 
 @media screen and (max-width: 768px) {
   .friend-page {
-    padding: 2rem 0rem;
+    padding: 2.5rem 0.5rem;
     /* margin-top: 100px; */
   }
 }

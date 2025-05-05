@@ -9,10 +9,15 @@ import qr from "../assets/qr.jpg";
 
 function FriendAccount({ friend, refresh }) {
   const [amount, setAmount] = useState("");
+  const [mailLoading, setMailLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [note, setNote] = useState("");
   const [toggleQr, setQr] = useState(false);
   const navigate = useNavigate();
+
+  const confirmSendMail = () => {
+    window.confirm("Are you sure you want to send email?") && handleSendEmail();
+  }
 
   const handleTransaction = (value) => {
     setLoading(true);
@@ -68,6 +73,7 @@ function FriendAccount({ friend, refresh }) {
 
   const handleSendEmail = () => {
     if (!friend.balance || friend.balance <= 0) return alert("No balance");
+    setMailLoading(true);
   
     axios
       .post("https://money-manager-api-krhz.onrender.com/api/email", {
@@ -75,10 +81,12 @@ function FriendAccount({ friend, refresh }) {
       })
       .then(() => {
         alert("Email sent successfully!");
+        setMailLoading(false);
       })
       .catch((err) => {
         console.error("Email Error:", err.response?.data || err.message);
         alert("Failed to send email. Check console for details.");
+        setMailLoading(false);
       });
   };
   
@@ -181,9 +189,23 @@ function FriendAccount({ friend, refresh }) {
       <div className="center flex-col pt-20">
         <div className="btn-con center">
           <button onClick={ShowQr}>Show QR</button>
-          <button className="btn email-btn" onClick={handleSendEmail} style={{ width: '12em' }}>
-            Send Balance via Email
-          </button>
+          {!mailLoading && (
+            <button className="btn email-btn" onClick={confirmSendMail} style={{ width: '10em' }}>Send Mail</button>
+          )}
+          {mailLoading && (
+            <div className="center">
+              <Triangle
+                visible={true}
+                height="50"
+                width="50"
+                color="#984bf7"
+                ariaLabel="triangle-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+              />
+            </div>
+          )}
+          
         </div>
         {toggleQr && (
           <div className="qr-details pt-20">
