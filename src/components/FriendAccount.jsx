@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Triangle } from "react-loader-spinner";
@@ -14,6 +14,10 @@ function FriendAccount({ friend, refresh }) {
   const [note, setNote] = useState("");
   const [toggleQr, setQr] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = `${friend.name}'s Account - Y-MoneyManager`;
+  }, [document.title]);
 
   const confirmSendMail = () => {
     window.confirm("Are you sure you want to send email?") && handleSendEmail();
