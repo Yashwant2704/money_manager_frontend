@@ -105,7 +105,7 @@ function FriendAccount({ friend, refresh }) {
           <span className="friend-balance">₹{friend.balance}</span>
         </p>
 
-        <div className="transaction-section">
+        <div className="transaction-section noprint">
           <h4 className="mb-10px">Add/Subtract Money</h4>
           <input
             type="number"
@@ -188,9 +188,10 @@ function FriendAccount({ friend, refresh }) {
       </div>
       <div className="center flex-col pt-20">
         <div className="btn-con center">
-          <button onClick={ShowQr}>Show QR</button>
+          <button onClick={ShowQr} className="noprint">Show QR</button>
+          <button onClick={window.print} className="noprint">Print</button>
           {!mailLoading && (
-            <button className="btn email-btn" onClick={confirmSendMail} style={{ width: '10em' }}>Send Mail</button>
+            <button className="btn email-btn noprint" onClick={confirmSendMail} style={{ width: '10em' }}>Send Mail</button>
           )}
           {mailLoading && (
             <div className="center">
@@ -208,7 +209,7 @@ function FriendAccount({ friend, refresh }) {
           
         </div>
         {toggleQr && (
-          <div className="qr-details pt-20">
+          <div className="qr-details pt-20 noprint">
             <img src={qr} alt="qr" height={300} width={380} />
             <p className="white font-20px mb-30px center">
               Pay&nbsp;

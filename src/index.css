@@ -110,3 +110,9 @@ input:focus, textarea:focus {
  .flex-col{
   flex-direction: column;
  }
+
+ @media print {
+  .noprint {
+    display: none !important;
+  }
+}

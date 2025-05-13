@@ -115,7 +115,7 @@
 
 .btn-con{
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .qr-details{

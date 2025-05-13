@@ -11,7 +11,7 @@ function Navbar() {
     navigate('/');
   }
   return (
-    <nav className="navbar">
+    <nav className="navbar noprint">
       <Link className="navbar-link" to="/"><div className="navbar-title"><img src={logo} alt="logo" className='logo-svg' /> Y-MoneyManager</div></Link>
       {/* {userLoggedIn && <Link className="navbar-link" to="/">Home</Link>} */}
       {userLoggedIn && <button className="navbar-link" onClick={logout}>Logout</button>}

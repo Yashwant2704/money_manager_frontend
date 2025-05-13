@@ -3,7 +3,7 @@ import './Footer.css'
 
 function Footer() {
   return (
-    <div className="Footer">
+    <div className="Footer noprint">
         <p>© 2025 </p><p className='light-purple'>Y-MoneyManager</p>
     </div>
   )
