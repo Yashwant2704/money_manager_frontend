@@ -80,7 +80,7 @@ function FriendAccount({ friend, refresh }) {
     setMailLoading(true);
   
     axios
-      .post("https://money-manager-api-krhz.onrender.com/api/email", {
+      .post("${import.meta.env.VITE_API_BASE}/email", {
         friend, // Pass entire friend object with transactions
       })
       .then(() => {

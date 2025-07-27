@@ -1,5 +1,13 @@
-.TransactionPage{
+.TransactionPage {
   padding: 2rem 1rem;
   margin-top: 1.5rem;
+}
 
+.formInput {
+  width: 50%;
+}
+.field {
+  margin-block: 10px;
+  display: flex;
+  flex-direction: column;
 }
