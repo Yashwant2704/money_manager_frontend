@@ -118,7 +118,6 @@ function TransactionPage() {
     <div className="TransactionPage">
       {!isEditing ? (
         <>
-        <button className="back" onClick={goBack}><i className="icon fa-solid fa-arrow-right-from-bracket fa-rotate-180"></i></button>
           <div className="details">
             <div>
               Transaction Date:{" "}
@@ -140,6 +139,7 @@ function TransactionPage() {
             </div>
           </div>
           <div className="center" style={{ marginTop: "1rem" }}>
+            <button className="back" onClick={goBack}><i className="icon fa-solid fa-arrow-right-from-bracket fa-rotate-180"></i></button>
             <button onClick={() => setIsEditing(true)}>Edit</button>
             <button onClick={deleteTransaction}>Delete</button>
           </div>
