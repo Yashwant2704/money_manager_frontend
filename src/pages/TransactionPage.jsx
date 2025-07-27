@@ -96,7 +96,7 @@ function TransactionPage() {
 
   if (loading) {
     return (
-      <div className="center">
+      <div className="center transaction-loader">
         <Triangle
           visible={true}
           height="150"
