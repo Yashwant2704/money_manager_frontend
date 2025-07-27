@@ -57,6 +57,10 @@ function TransactionPage() {
     }
   };
 
+  const goBack = () =>{
+    navigate(-1);
+  }
+  
   const handleEditSubmit = async (e) => {
     e.preventDefault();
 
@@ -114,6 +118,7 @@ function TransactionPage() {
     <div className="TransactionPage">
       {!isEditing ? (
         <>
+        <button className="back" onClick={goBack}><i className="icon fa-solid fa-arrow-right-from-bracket fa-rotate-180"></i></button>
           <div className="details">
             <div>
               Transaction Date:{" "}

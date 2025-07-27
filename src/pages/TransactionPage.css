@@ -14,3 +14,12 @@
 .transaction-loader{
   margin-top: 25px;
 }
+.back{
+  padding-block: 5px;
+  padding-inline: 15px;
+  margin-left: 0;
+  margin-bottom: 20px;
+}
+.icon{
+  font-size: 1.5em;
+}
