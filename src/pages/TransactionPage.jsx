@@ -176,7 +176,6 @@ function TransactionPage() {
               id="amount"
               value={editAmount}
               onChange={(e) => setEditAmount(e.target.value)}
-              min="0"
               required
             />
           </div>
