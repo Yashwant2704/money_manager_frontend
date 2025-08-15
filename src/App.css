@@ -1,5 +1,5 @@
 /* App.css */
-/* @import './variables.css'; */
+@import '../variables.css';
 
 body {
   background-color: var(--background-color);
