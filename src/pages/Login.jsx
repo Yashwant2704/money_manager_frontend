@@ -10,7 +10,8 @@ function Login() {
   const [error, setError] = useState('');
 
   // Backend API URL (change if needed)
-  const API_URL = 'http://localhost:5000/api/auth';
+  const API_URL =`${import.meta.env.VITE_API_BASE}/auth`;
+;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
