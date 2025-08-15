@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Triangle } from "react-loader-spinner";
@@ -15,38 +15,55 @@ function FriendAccount({ friend, refresh }) {
   const [toggleQr, setQr] = useState(false);
   const navigate = useNavigate();
 
+  const printRef = useRef(null);
+
   useEffect(() => {
     document.title = `${friend.name}'s Account - Y-MoneyManager`;
-  }, [document.title]);
+  }, [friend.name]);
 
-  const confirmSendMail = () => {
-    window.confirm("Are you sure you want to send email?") && handleSendEmail();
-  }
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("You must be logged in to perform this action.");
+      navigate("/login");
+      return null;
+    }
+    return { Authorization: `Bearer ${token}` };
+  };
 
-  const handleTransaction = (value) => {
-    setLoading(true);
+  const handleTransaction = async (value) => {
     if (!amount) return alert("Enter amount");
-    axios
-      .post(
+    const headers = getAuthHeaders();
+    if (!headers) return;
+
+    setLoading(true);
+    try {
+      await axios.post(
         `${import.meta.env.VITE_API_BASE}/friends/transaction/${friend._id}`,
         {
           amount: parseFloat(value),
           note,
-        }
-      )
-      .then(() => {
-        setAmount("");
-        setNote("");
-        setLoading(false);
-        refresh();
-      })
-      .catch((err) => console.error(err));
+        },
+        { headers }
+      );
+      setAmount("");
+      setNote("");
+      refresh();
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        alert("Session expired. Please login again.");
+        localStorage.removeItem("token");
+        navigate("/login");
+      } else {
+        console.error(err);
+        alert("Transaction failed. Please try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const printRef = useRef(null);
-
   const handlePrint = async () => {
-    // console.log(printRef.current);
     const element = printRef.current;
     if (!element) return;
     const canvas = await html2canvas(element, {
@@ -61,7 +78,6 @@ function FriendAccount({ friend, refresh }) {
     });
 
     const imgProperties = pdf.getImageProperties(data);
-    // console.log(imgProperties);
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
 
@@ -71,31 +87,35 @@ function FriendAccount({ friend, refresh }) {
 
   const ShowQr = () => {
     if (!friend.balance || friend.balance <= 0) return alert("No balance");
-    !toggleQr && setQr(true);
-    toggleQr && setQr(false);
+    setQr(!toggleQr);
   };
 
-  const handleSendEmail = () => {
-    if (!friend.balance || friend.balance <= 0) return alert("No balance");
-    setMailLoading(true);
-  
-    axios
-      .post("${import.meta.env.VITE_API_BASE}/email", {
-        friend, // Pass entire friend object with transactions
-      })
-      .then(() => {
-        alert("Email sent successfully!");
-        setMailLoading(false);
-      })
-      .catch((err) => {
-        console.error("Email Error:", err.response?.data || err.message);
-        alert("Failed to send email. Check console for details.");
-        setMailLoading(false);
-      });
+  const confirmSendMail = () => {
+    if (window.confirm("Are you sure you want to send email?")) {
+      handleSendEmail();
+    }
   };
-  
-  
-  
+
+  const handleSendEmail = async () => {
+    if (!friend.balance || friend.balance <= 0) return alert("No balance");
+    const headers = getAuthHeaders();
+    if (!headers) return;
+
+    setMailLoading(true);
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_API_BASE}/email`,
+        { friend }, // entire friend object includes transactions
+        { headers }
+      );
+      alert("Email sent successfully!");
+    } catch (err) {
+      console.error("Email Error:", err.response?.data || err.message);
+      alert("Failed to send email. Check console for details.");
+    } finally {
+      setMailLoading(false);
+    }
+  };
 
   return (
     <div className="friend-account" ref={printRef}>
@@ -129,27 +149,22 @@ function FriendAccount({ friend, refresh }) {
             <button
               className="btn add-btn"
               onClick={() => handleTransaction(amount)}
+              disabled={loading}
             >
               I paid
             </button>
             <button
               className="btn subtract-btn"
               onClick={() => handleTransaction(-amount)}
+              disabled={loading}
             >
               They paid
             </button>
           </div>
         </div>
 
-        <div className="transaction-history" ref={printRef}>
+        <div className="transaction-history">
           <h4>Transaction History:</h4>
-          {/* <ul>
-          {friend.transactions.map((txn, index) => (
-            <li key={index}>
-              <span className="date">{new Date(txn.date).toLocaleDateString()}</span>  <span className="amount">₹{txn.amount}</span> ({txn.note})
-            </li>
-          ))}
-        </ul> */}
           {loading && (
             <div className="center">
               <Triangle
@@ -158,44 +173,51 @@ function FriendAccount({ friend, refresh }) {
                 width="120"
                 color="#984bf7"
                 ariaLabel="triangle-loading"
-                wrapperStyle={{}}
-                wrapperClass=""
               />
             </div>
           )}
           {!loading && (
-            <div>
-              <table className="transactions-table">
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Amount</th>
-                    <th>Note</th>
+            <table className="transactions-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Amount</th>
+                  <th>Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                {friend.transactions.map((txn, index) => (
+                  <tr
+                    key={index}
+                    onClick={() => navigate(`/transaction/${txn._id}`)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <td>{new Date(txn.date).toLocaleDateString("en-GB")}</td>
+                    <td>₹&nbsp;{txn.amount}</td>
+                    <td>{txn.note}</td>
                   </tr>
-                </thead>
-                <tbody>
-                  {friend.transactions.map((txn, index) => (
-                    <tr
-                      key={index}
-                      onClick={() => navigate(`/transaction/${txn._id}`)}
-                    >
-                      <td>{new Date(txn.date).toLocaleDateString("en-GB")}</td>
-                      <td>₹&nbsp;{txn.amount}</td>
-                      <td>{txn.note}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           )}
         </div>
       </div>
       <div className="center flex-col pt-20">
         <div className="btn-con center">
-          <button onClick={ShowQr} className="noprint">Show QR</button>
-          <button onClick={window.print} className="noprint">Print</button>
+          <button onClick={ShowQr} className="noprint">
+            {toggleQr ? "Hide QR" : "Show QR"}
+          </button>
+          <button onClick={handlePrint} className="noprint">
+            Print
+          </button>
           {!mailLoading && (
-            <button className="btn email-btn noprint" onClick={confirmSendMail} style={{ width: '10em' }}>Send Mail</button>
+            <button
+              className="btn email-btn noprint"
+              onClick={confirmSendMail}
+              style={{ width: "10em" }}
+            >
+              Send Mail
+            </button>
           )}
           {mailLoading && (
             <div className="center">
@@ -205,12 +227,9 @@ function FriendAccount({ friend, refresh }) {
                 width="50"
                 color="#984bf7"
                 ariaLabel="triangle-loading"
-                wrapperStyle={{}}
-                wrapperClass=""
               />
             </div>
           )}
-          
         </div>
         {toggleQr && (
           <div className="qr-details pt-20 noprint">

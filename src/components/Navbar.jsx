@@ -8,7 +8,7 @@ function Navbar() {
   const userLoggedIn = localStorage.getItem('token');
   const logout = () => {
     localStorage.removeItem('token');
-    navigate('/');
+    navigate('/login');
   }
   return (
     <nav className="navbar noprint">

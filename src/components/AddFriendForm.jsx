@@ -6,15 +6,39 @@ function AddFriendForm({ refresh }) {
   const [name, setName] = useState('');
   const [mail, setMail] = useState('');
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (!name.trim()) return alert('Enter friend name');
     if (!mail.trim()) return alert('Enter friend email');
-    axios.post(`${import.meta.env.VITE_API_BASE}/friends/add`, { name, mail })
-      .then(() => {
-        setName('');
-        setMail('');
-        refresh();
-      }).catch(err => console.error(err));
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('You must be logged in to add a friend.');
+      return;
+    }
+
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_API_BASE}/friends/add`,
+        { name, mail },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setName('');
+      setMail('');
+      refresh();
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        alert('Session expired. Please log in again.');
+        localStorage.removeItem('token');
+        // Optionally redirect to login page here
+      } else {
+        console.error(err);
+        alert('Failed to add friend. Please try again.');
+      }
+    }
   };
 
   return (

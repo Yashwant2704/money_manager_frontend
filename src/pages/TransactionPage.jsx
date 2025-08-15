@@ -13,54 +13,79 @@ function TransactionPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [editAmount, setEditAmount] = useState("");
   const [editNote, setEditNote] = useState("");
+  const [editDate, setEditDate] = useState(""); // yyyy-mm-dd
+  const [editTime, setEditTime] = useState(""); // HH:mm
 
-  // For native inputs, keep date and time as separate strings in ISO format
-  const [editDate, setEditDate] = useState("");  // yyyy-mm-dd
-  const [editTime, setEditTime] = useState("");  // HH:mm
+  // Helper to get token and create auth headers
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return null;
+    }
+    return { Authorization: `Bearer ${token}` };
+  };
 
   // Fetch transaction and initialize form fields
   const getTransaction = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_BASE}/friends/transaction/${id}`);
-      setTransaction(res.data);
+      const headers = getAuthHeaders();
+      if (!headers) return; // token missing, redirected to login
 
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_BASE}/friends/transaction/${id}`,
+        { headers }
+      );
+      setTransaction(res.data);
       setEditAmount(res.data.amount);
       setEditNote(res.data.note || "");
 
-      // Parse date and time separately from the ISO date string
       const txnDate = new Date(res.data.date);
 
-      // Date input expects yyyy-mm-dd
+      // Format yyyy-mm-dd
       const yyyy = txnDate.getFullYear();
       const mm = String(txnDate.getMonth() + 1).padStart(2, "0");
       const dd = String(txnDate.getDate()).padStart(2, "0");
       setEditDate(`${yyyy}-${mm}-${dd}`);
 
-      // Time input expects HH:mm (24h)
+      // Format HH:mm (24 hour)
       const hh = String(txnDate.getHours()).padStart(2, "0");
       const mi = String(txnDate.getMinutes()).padStart(2, "0");
       setEditTime(`${hh}:${mi}`);
     } catch (error) {
-      alert("Error fetching transaction");
+      if (error.response?.status === 401) {
+        localStorage.removeItem("token");
+        navigate("/login");
+      } else {
+        alert("Error fetching transaction");
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  const deleteTransaction = () => {
+  const deleteTransaction = async () => {
     if (window.confirm("Are you sure?")) {
-      axios
-        .delete(`${import.meta.env.VITE_API_BASE}/friends/transaction/${id}`)
-        .then(() => navigate(-1))
-        .catch((err) => alert(err));
+      try {
+        const headers = getAuthHeaders();
+        if (!headers) return;
+
+        await axios.delete(
+          `${import.meta.env.VITE_API_BASE}/friends/transaction/${id}`,
+          { headers }
+        );
+        navigate(-1);
+      } catch (err) {
+        alert("Failed to delete transaction");
+      }
     }
   };
 
-  const goBack = () =>{
+  const goBack = () => {
     navigate(-1);
-  }
-  
+  };
+
   const handleEditSubmit = async (e) => {
     e.preventDefault();
 
@@ -71,7 +96,9 @@ function TransactionPage() {
 
     setLoading(true);
     try {
-      // Combine date and time into one ISO string
+      const headers = getAuthHeaders();
+      if (!headers) return;
+
       const updatedDate = new Date(`${editDate}T${editTime}:00`).toISOString();
 
       const updatedData = {
@@ -82,18 +109,24 @@ function TransactionPage() {
 
       const res = await axios.put(
         `${import.meta.env.VITE_API_BASE}/friends/transaction/${id}`,
-        updatedData
+        updatedData,
+        { headers }
       );
       setTransaction(res.data);
       setIsEditing(false);
     } catch (error) {
-      alert("Failed to update transaction");
+      if (error.response?.status === 401) {
+        localStorage.removeItem("token");
+        navigate("/login");
+      } else {
+        alert("Failed to update transaction");
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     getTransaction();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -139,7 +172,9 @@ function TransactionPage() {
             </div>
           </div>
           <div className="center" style={{ marginTop: "1rem" }}>
-            <button className="back" onClick={goBack}><i className="icon fa-solid fa-arrow-right-from-bracket fa-rotate-180"></i></button>
+            <button className="back" onClick={goBack}>
+              <i className="icon fa-solid fa-arrow-right-from-bracket fa-rotate-180"></i>
+            </button>
             <button onClick={() => setIsEditing(true)}>Edit</button>
             <button onClick={deleteTransaction}>Delete</button>
           </div>
@@ -195,16 +230,11 @@ function TransactionPage() {
               type="button"
               onClick={() => {
                 setIsEditing(false);
-                // Reset fields
                 setEditAmount(transaction.amount);
                 setEditNote(transaction.note || "");
                 const txnDate = new Date(transaction.date);
-                setEditDate(
-                  txnDate.toISOString().substring(0, 10) // yyyy-mm-dd
-                );
-                setEditTime(
-                  txnDate.toTimeString().substring(0, 5) // HH:mm
-                );
+                setEditDate(txnDate.toISOString().substring(0, 10)); // yyyy-mm-dd
+                setEditTime(txnDate.toTimeString().substring(0, 5)); // HH:mm
               }}
               style={{ marginLeft: "1rem" }}
             >
