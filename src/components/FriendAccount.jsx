@@ -64,25 +64,26 @@ function FriendAccount({ friend, refresh }) {
   };
 
   const handlePrint = async () => {
-    const element = printRef.current;
-    if (!element) return;
-    const canvas = await html2canvas(element, {
-      scale: 2,
-    });
-    const data = canvas.toDataURL("image/png");
+    // const element = printRef.current;
+    // if (!element) return;
+    // const canvas = await html2canvas(element, {
+    //   scale: 2,
+    // });
+    // const data = canvas.toDataURL("image/png");
 
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "px",
-      format: "a4",
-    });
+    // const pdf = new jsPDF({
+    //   orientation: "portrait",
+    //   unit: "px",
+    //   format: "a4",
+    // });
 
-    const imgProperties = pdf.getImageProperties(data);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+    // const imgProperties = pdf.getImageProperties(data);
+    // const pdfWidth = pdf.internal.pageSize.getWidth();
+    // const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
 
-    pdf.addImage(data, "PNG", 0, 0, pdfWidth, pdfHeight);
-    pdf.save("Balance.pdf");
+    // pdf.addImage(data, "PNG", 0, 0, pdfWidth, pdfHeight);
+    // pdf.save("Balance.pdf");
+    window.print();
   };
 
   const ShowQr = () => {
