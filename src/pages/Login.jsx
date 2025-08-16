@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import { Triangle } from "react-loader-spinner";
 import logo from '../assets/money-logo.svg';
 
 function Login() {
@@ -67,7 +68,18 @@ function Login() {
             placeholder="Password"
             required
           />
-          <button disabled={loading}>{isLogin ? 'Login' : 'Register'}</button>
+          {loading && (
+                      <div className="center">
+                        <Triangle
+                          visible={true}
+                          height="50"
+                          width="50"
+                          color="#984bf7"
+                          ariaLabel="triangle-loading"
+                        />
+                      </div>
+          )}
+          {!loading && <button disabled={loading}>{isLogin ? 'Login' : 'Register'}</button>}
         </form>
         {error && <div style={{color:'red', margin:'10px'}}>{error}</div>}
         <div style={{marginTop: '10px', cursor: 'pointer'}}>
