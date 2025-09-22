@@ -5,7 +5,10 @@ import { Triangle } from "react-loader-spinner";
 import "./FriendAccount.css";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import qr from "../assets/qr.jpg";
+// import qr from "../assets/qr.jpg";
+// import qr_mbk from "../assets/qr_mbk.jpg";
+import qr_mbk from "../assets/qr_mbk.png";
+// import qr_mbk from "../assets/qr_mbk.svg";
 
 function FriendAccount({ friend, refresh }) {
   const [amount, setAmount] = useState("");
@@ -234,7 +237,7 @@ function FriendAccount({ friend, refresh }) {
         </div>
         {toggleQr && (
           <div className="qr-details pt-20 noprint">
-            <img src={qr} alt="qr" height={300} width={380} />
+            <img src={qr_mbk} alt="qr" height={300} width={300} />
             <p className="white font-20px mb-30px center">
               Pay&nbsp;
               <span className="friend-balance">₹{friend.balance}</span>
