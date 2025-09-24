@@ -59,7 +59,18 @@ function TransactionPage() {
         localStorage.removeItem("token");
         navigate("/login");
       } else {
-        alert("Error fetching transaction");
+        toast.error('Error fetching transaction!', {
+          style: {
+            border: '3px solid #bb86fc',
+            padding: '16px',
+            color: '#bb86fc',
+            background: '#272727'
+          },
+          iconTheme: {
+            primary: '#bb86fc',
+            secondary: '#272727',
+          },
+        });
       }
     } finally {
       setLoading(false);
@@ -114,7 +125,18 @@ function TransactionPage() {
     e.preventDefault();
 
     if (!editDate || !editTime) {
-      alert("Please select both date and time.");
+      toast.error('Please select both date and time.', {
+        style: {
+          border: '3px solid #bb86fc',
+          padding: '16px',
+          color: '#bb86fc',
+          background: '#272727'
+        },
+        iconTheme: {
+          primary: '#bb86fc',
+          secondary: '#272727',
+        },
+      });
       return;
     }
 
@@ -143,7 +165,18 @@ function TransactionPage() {
         localStorage.removeItem("token");
         navigate("/login");
       } else {
-        alert("Failed to update transaction");
+        toast.error('Failed to update transaction!', {
+          style: {
+            border: '3px solid #bb86fc',
+            padding: '16px',
+            color: '#bb86fc',
+            background: '#272727'
+          },
+          iconTheme: {
+            primary: '#bb86fc',
+            secondary: '#272727',
+          },
+        });
       }
     } finally {
       setLoading(false);

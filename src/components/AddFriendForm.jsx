@@ -35,7 +35,18 @@ function AddFriendForm({ refresh }) {
 
     const token = localStorage.getItem('token');
     if (!token) {
-      alert('You must be logged in to add a friend.');
+      toast.error('You must be logged in to add a friend', {
+        style: {
+          border: '3px solid #bb86fc',
+          padding: '16px',
+          color: '#bb86fc',
+          background: '#272727'
+        },
+        iconTheme: {
+          primary: '#bb86fc',
+          secondary: '#272727',
+        },
+      });
       return;
     }
 
@@ -54,12 +65,34 @@ function AddFriendForm({ refresh }) {
       refresh();
     } catch (err) {
       if (err.response && err.response.status === 401) {
-        alert('Session expired. Please log in again.');
+        toast.error('Session expired. Please login again.', {
+          style: {
+            border: '3px solid #bb86fc',
+            padding: '16px',
+            color: '#bb86fc',
+            background: '#272727'
+          },
+          iconTheme: {
+            primary: '#bb86fc',
+            secondary: '#272727',
+          },
+        });
         localStorage.removeItem('token');
         // Optionally redirect to login page here
       } else {
         console.error(err);
-        alert('Failed to add friend. Please try again.');
+        toast.error('Failed to add friend', {
+          style: {
+            border: '3px solid #bb86fc',
+            padding: '16px',
+            color: '#bb86fc',
+            background: '#272727'
+          },
+          iconTheme: {
+            primary: '#bb86fc',
+            secondary: '#272727',
+          },
+        });
       }
     }
   };

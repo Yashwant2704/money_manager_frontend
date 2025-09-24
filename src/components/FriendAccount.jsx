@@ -5,6 +5,7 @@ import { Triangle } from "react-loader-spinner";
 import "./FriendAccount.css";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { Toaster, toast } from 'react-hot-toast';
 // import qr from "../assets/qr.jpg";
 // import qr_mbk from "../assets/qr_mbk.jpg";
 import qr_mbk from "../assets/qr_mbk.png";
@@ -27,7 +28,18 @@ function FriendAccount({ friend, refresh }) {
   const getAuthHeaders = () => {
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("You must be logged in to perform this action.");
+      toast.error('You must be logged in to perform this action.', {
+        style: {
+          border: '3px solid #bb86fc',
+          padding: '16px',
+          color: '#bb86fc',
+          background: '#272727'
+        },
+        iconTheme: {
+          primary: '#bb86fc',
+          secondary: '#272727',
+        },
+      });
       navigate("/login");
       return null;
     }
@@ -35,7 +47,18 @@ function FriendAccount({ friend, refresh }) {
   };
 
   const handleTransaction = async (value) => {
-    if (!amount) return alert("Enter amount");
+    if (!amount) return toast.error('Enter amount', {
+      style: {
+        border: '3px solid #bb86fc',
+        padding: '16px',
+        color: '#bb86fc',
+        background: '#272727'
+      },
+      iconTheme: {
+        primary: '#bb86fc',
+        secondary: '#272727',
+      },
+    });
     const headers = getAuthHeaders();
     if (!headers) return;
 
@@ -54,12 +77,34 @@ function FriendAccount({ friend, refresh }) {
       refresh();
     } catch (err) {
       if (err.response && err.response.status === 401) {
-        alert("Session expired. Please login again.");
+        toast.error('Session expired. Please login again.', {
+          style: {
+            border: '3px solid #bb86fc',
+            padding: '16px',
+            color: '#bb86fc',
+            background: '#272727'
+          },
+          iconTheme: {
+            primary: '#bb86fc',
+            secondary: '#272727',
+          },
+        });
         localStorage.removeItem("token");
         navigate("/login");
       } else {
         console.error(err);
-        alert("Transaction failed. Please try again.");
+        toast.error('Transaction failed. Please try again.', {
+          style: {
+            border: '3px solid #bb86fc',
+            padding: '16px',
+            color: '#bb86fc',
+            background: '#272727'
+          },
+          iconTheme: {
+            primary: '#bb86fc',
+            secondary: '#272727',
+          },
+        });
       }
     } finally {
       setLoading(false);
@@ -90,7 +135,18 @@ function FriendAccount({ friend, refresh }) {
   };
 
   const ShowQr = () => {
-    if (!friend.balance || friend.balance <= 0) return alert("No balance");
+    if (!friend.balance || friend.balance <= 0) return toast.error('No balance', {
+      style: {
+        border: '3px solid #bb86fc',
+        padding: '16px',
+        color: '#bb86fc',
+        background: '#272727'
+      },
+      iconTheme: {
+        primary: '#bb86fc',
+        secondary: '#272727',
+      },
+    });
     setQr(!toggleQr);
   };
 
@@ -101,7 +157,18 @@ function FriendAccount({ friend, refresh }) {
   };
 
   const handleSendEmail = async () => {
-    if (!friend.balance || friend.balance <= 0) return alert("No balance");
+    if (!friend.balance || friend.balance <= 0) toast.error('No balance', {
+      style: {
+        border: '3px solid #bb86fc',
+        padding: '16px',
+        color: '#bb86fc',
+        background: '#272727'
+      },
+      iconTheme: {
+        primary: '#bb86fc',
+        secondary: '#272727',
+      },
+    });
     const headers = getAuthHeaders();
     if (!headers) return;
 
