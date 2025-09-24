@@ -1,14 +1,37 @@
 import { useState } from 'react';
 import axios from 'axios';
 import './AddFriendForm.css';
+import { Toaster, toast } from 'react-hot-toast';
 
 function AddFriendForm({ refresh }) {
   const [name, setName] = useState('');
   const [mail, setMail] = useState('');
 
   const handleAdd = async () => {
-    if (!name.trim()) return alert('Enter friend name');
-    if (!mail.trim()) return alert('Enter friend email');
+    if (!name.trim()) return toast.error('Enter friend name', {
+      style: {
+        border: '3px solid #bb86fc',
+        padding: '16px',
+        color: '#bb86fc',
+        background: '#272727'
+      },
+      iconTheme: {
+        primary: '#bb86fc',
+        secondary: '#272727',
+      },
+    });
+    if (!mail.trim()) return toast.error('Enter friend email', {
+      style: {
+        border: '3px solid #bb86fc',
+        padding: '16px',
+        color: '#bb86fc',
+        background: '#272727'
+      },
+      iconTheme: {
+        primary: '#bb86fc',
+        secondary: '#272727',
+      },
+    });
 
     const token = localStorage.getItem('token');
     if (!token) {

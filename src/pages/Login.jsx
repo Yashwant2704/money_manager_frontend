@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import { Triangle } from "react-loader-spinner";
 import logo from '../assets/money-logo.svg';
+import { Toaster, toast } from 'react-hot-toast';
 
 function Login() {
   const navigate = useNavigate();
@@ -34,16 +35,51 @@ function Login() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || 'Error');
 
-      if (isLogin) {
+      if (isLogin && data.token) {
         // Save token from backend
         localStorage.setItem('token', data.token);
+        toast.success('Login Successful!', {
+          style: {
+            border: '3px solid #bb86fc',
+            padding: '16px',
+            color: '#bb86fc',
+            background: '#272727'
+          },
+          iconTheme: {
+            primary: '#bb86fc',
+            secondary: '#272727',
+          },
+        });
         navigate('/');
       } else {
-        alert("Registration successful! Please login.");
+        toast.success('Registration Successful!', {
+          style: {
+            border: '3px solid #bb86fc',
+            padding: '16px',
+            color: '#bb86fc',
+            background: '#272727'
+          },
+          iconTheme: {
+            primary: '#bb86fc',
+            secondary: '#272727',
+          },
+        });
         setIsLogin(true);
       }
     } catch (err) {
       setError(err.message);
+      toast.error(err.message, {
+        style: {
+          border: '3px solid #bb86fc',
+          padding: '16px',
+          color: '#bb86fc',
+          background: '#272727'
+        },
+        iconTheme: {
+          primary: '#bb86fc',
+          secondary: '#272727',
+        },
+      });
     }
     setLoading(false);
   };
@@ -81,7 +117,6 @@ function Login() {
           )}
           {!loading && <button disabled={loading}>{isLogin ? 'Login' : 'Register'}</button>}
         </form>
-        {error && <div style={{color:'red', margin:'10px'}}>{error}</div>}
         <div style={{marginTop: '10px', cursor: 'pointer'}}>
           {isLogin ? (
             <span onClick={() => setIsLogin(false)}>

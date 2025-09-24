@@ -112,10 +112,32 @@ function FriendAccount({ friend, refresh }) {
         { friend }, // entire friend object includes transactions
         { headers }
       );
-      alert("Email sent successfully!");
+      toast.success('Mail sent!', {
+        style: {
+          border: '3px solid #bb86fc',
+          padding: '16px',
+          color: '#bb86fc',
+          background: '#272727'
+        },
+        iconTheme: {
+          primary: '#bb86fc',
+          secondary: '#272727',
+        },
+      });
     } catch (err) {
       console.error("Email Error:", err.response?.data || err.message);
-      alert("Failed to send email. Check console for details.");
+      toast.error(err.response?.data || err.message, {
+        style: {
+          border: '3px solid #bb86fc',
+          padding: '16px',
+          color: '#bb86fc',
+          background: '#272727'
+        },
+        iconTheme: {
+          primary: '#bb86fc',
+          secondary: '#272727',
+        },
+      });
     } finally {
       setMailLoading(false);
     }

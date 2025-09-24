@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Triangle } from "react-loader-spinner";
 import "./TransactionPage.css";
 import axios from "axios";
+import { Toaster, toast } from 'react-hot-toast';
 
 function TransactionPage() {
   const [loading, setLoading] = useState(false);
@@ -75,9 +76,32 @@ function TransactionPage() {
           `${import.meta.env.VITE_API_BASE}/friends/transaction/${id}`,
           { headers }
         );
+        toast.success('Deleted Transaction!', {
+          style: {
+            border: '3px solid #bb86fc',
+            padding: '16px',
+            color: '#bb86fc',
+            background: '#272727'
+          },
+          iconTheme: {
+            primary: '#bb86fc',
+            secondary: '#272727',
+          },
+        });
         navigate(-1);
       } catch (err) {
-        alert("Failed to delete transaction");
+        toast.error('Delete Failed!', {
+          style: {
+            border: '3px solid #bb86fc',
+            padding: '16px',
+            color: '#bb86fc',
+            background: '#272727'
+          },
+          iconTheme: {
+            primary: '#bb86fc',
+            secondary: '#272727',
+          },
+        });
       }
     }
   };

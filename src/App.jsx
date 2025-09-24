@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import TransactionPage from './pages/TransactionPage';
 import Footer from './components/Footer';
+import { Toaster } from 'react-hot-toast';
 
 import './App.css';
 
@@ -21,6 +22,7 @@ function App() {
 
   return (
     <div className="app dark-theme">
+    <div><Toaster/></div>
      {userLoggedIn &&( <Navbar />)}
       <Routes>
         <Route path="/" element={<Home />} />
