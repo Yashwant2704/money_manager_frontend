@@ -22,7 +22,7 @@ function App() {
 
   const [bannerVisible, setBannerVisible] = useState(true);
 
-  const latestChangesMessage = "⚠️ Latest fix: Fixed delete transaction function";
+  const latestChangesMessage = "⚠️ Latest fix (26/09/25): Fixed delete transaction function";
   const [dismissAnimating, setDismissAnimating] = useState(false);
 
   const handleClose = () => {
