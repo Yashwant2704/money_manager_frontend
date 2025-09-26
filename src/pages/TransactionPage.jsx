@@ -63,11 +63,11 @@ function TransactionPage() {
           style: {
             border: '3px solid #bb86fc',
             padding: '16px',
-            color: '#bb86fc',
+            color: '#ffffff',
             background: '#272727'
           },
           iconTheme: {
-            primary: '#bb86fc',
+            primary: '#ffffff',
             secondary: '#272727',
           },
         });
@@ -91,11 +91,11 @@ function TransactionPage() {
           style: {
             border: '3px solid #bb86fc',
             padding: '16px',
-            color: '#bb86fc',
+            color: '#ffffff',
             background: '#272727'
           },
           iconTheme: {
-            primary: '#bb86fc',
+            primary: '#ffffff',
             secondary: '#272727',
           },
         });
@@ -105,11 +105,11 @@ function TransactionPage() {
           style: {
             border: '3px solid #bb86fc',
             padding: '16px',
-            color: '#bb86fc',
+            color: '#ffffff',
             background: '#272727'
           },
           iconTheme: {
-            primary: '#bb86fc',
+            primary: '#ffffff',
             secondary: '#272727',
           },
         });
@@ -169,11 +169,11 @@ function TransactionPage() {
           style: {
             border: '3px solid #bb86fc',
             padding: '16px',
-            color: '#bb86fc',
+            color: '#ffffff',
             background: '#272727'
           },
           iconTheme: {
-            primary: '#bb86fc',
+            primary: '#ffffff',
             secondary: '#272727',
           },
         });
