@@ -98,7 +98,7 @@ function AddFriendForm({ refresh }) {
   };
 
   return (
-    <div className="add-friend-form noprint">
+    <div id='add-friend' className="add-friend-form noprint">
       <h2>Add Friend</h2>
       <input
         type="text"
