@@ -43,7 +43,7 @@
   margin: 0;
   font-size: 1.3rem;
   font-weight: 600;
-  color: #1e1e2e !important;
+  color: #ffffff !important;
 }
 
 .split-close-btn {
@@ -80,7 +80,7 @@
   display: block;
   margin-bottom: 6px;
   font-weight: 600;
-  color: #bb86fc;
+  color: #ffffff;
   font-size: 0.95rem;
 }
 
@@ -125,7 +125,7 @@
 
 .split-friends-section h3 {
   margin-bottom: 12px;
-  color: #bb86fc;
+  color: #ffffff;
   font-size: 1.1rem;
 }
 
@@ -173,7 +173,7 @@
 }
 
 .split-checkbox {
-  margin-right: 10px;
+  margin-right: 20px;
   width: 16px;
   height: 16px;
   cursor: pointer;
@@ -211,8 +211,9 @@
 
 .split-calculation h3 {
   margin-bottom: 12px;
-  font-size: 1.1rem;
-  color: #1e1e2e;
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin-top: 0;
 }
 
 .split-calc-row {
@@ -253,7 +254,7 @@
 
 .split-friend-chip {
   background-color: rgba(30, 30, 46, 0.3);
-  color: #1e1e2e;
+  color: #ffffff;
   padding: 3px 8px;
   border-radius: 12px;
   font-size: 0.75rem;
@@ -285,7 +286,7 @@
 
 .split-cancel-btn {
   background-color: #272727;
-  color: #bb86fc;
+  color: #ffffff;
   border: 2px solid #bb86fc;
 }
 
@@ -295,7 +296,7 @@
 
 .split-submit-btn {
   background: linear-gradient(135deg, #bb86fc 0%, #984bf7 100%);
-  color: #1e1e2e;
+  color: #ffffff;
 }
 
 .split-submit-btn:hover:not(:disabled) {
@@ -318,7 +319,7 @@
   
   .split-modal-content {
     max-width: 95vw;
-    max-height: 98vh;
+    max-height: 67vh;
   }
   
   .split-modal-header {

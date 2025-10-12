@@ -3,11 +3,13 @@ import AddFriendForm from "../components/AddFriendForm";
 import FriendList from "../components/FriendList";
 import SplitModal from "../components/SplitModal";
 import axios from "axios";
-import { toast } from 'react-hot-toast';
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
+import Banner from "../components/Banner";
 
 function Home() {
+  const [bannerOpen, setBannerOpen] = useState(true);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [splitModalOpen, setSplitModalOpen] = useState(false);
   const [friends, setFriends] = useState([]);
@@ -23,16 +25,16 @@ function Home() {
   const getAuthHeaders = () => {
     const token = localStorage.getItem("token");
     if (!token) {
-      toast.error('You must be logged in to perform this action.', {
+      toast.error("You must be logged in to perform this action.", {
         style: {
-          border: '3px solid #bb86fc',
-          padding: '16px',
-          color: '#bb86fc',
-          background: '#272727'
+          border: "3px solid #bb86fc",
+          padding: "16px",
+          color: "#ffffff",
+          background: "#272727",
         },
         iconTheme: {
-          primary: '#bb86fc',
-          secondary: '#272727',
+          primary: "#bb86fc",
+          secondary: "#272727",
         },
       });
       navigate("/login");
@@ -52,7 +54,7 @@ function Home() {
       );
       setFriends(response.data);
     } catch (error) {
-      console.error('Error fetching friends:', error);
+      console.error("Error fetching friends:", error);
     }
   };
 
@@ -68,52 +70,64 @@ function Home() {
       );
 
       triggerRefresh();
-      
-      toast.success(`Successfully split ₹${splitData.totalAmount} among ${splitData.selectedFriends.length + 1} people!`, {
-        style: {
-          border: '3px solid #bb86fc',
-          padding: '16px',
-          color: '#bb86fc',
-          background: '#272727'
-        },
-        iconTheme: {
-          primary: '#bb86fc',
-          secondary: '#272727',
-        },
-      });
-      
+
+      toast.success(
+        `Successfully split ₹${splitData.totalAmount} among ${
+          splitData.selectedFriends.length + 1
+        } people!`,
+        {
+          style: {
+            border: "3px solid #bb86fc",
+            padding: "16px",
+            color: "#ffffff",
+            background: "#272727",
+          },
+          iconTheme: {
+            primary: "#bb86fc",
+            secondary: "#272727",
+          },
+        }
+      );
+
       setSplitModalOpen(false);
     } catch (error) {
-      console.error('Split transaction error:', error);
-      toast.error(error.response?.data?.message || 'Failed to create split transaction', {
-        style: {
-          border: '3px solid #bb86fc',
-          padding: '16px',
-          color: '#bb86fc',
-          background: '#272727'
-        },
-        iconTheme: {
-          primary: '#bb86fc',
-          secondary: '#272727',
-        },
-      });
+      console.error("Split transaction error:", error);
+      toast.error(
+        error.response?.data?.message || "Failed to create split transaction",
+        {
+          style: {
+            border: "3px solid #bb86fc",
+            padding: "16px",
+            color: "#ffffff",
+            background: "#272727",
+          },
+          iconTheme: {
+            primary: "#bb86fc",
+            secondary: "#272727",
+          },
+        }
+      );
       throw error;
     }
   };
 
   return (
     <div className="home">
+      {/* <Banner message="Welcome to Y-MoneyManager!" onClose={() => setBannerOpen(false)} /> */}
       <FriendList refreshTrigger={refreshTrigger} />
       <AddFriendForm refresh={triggerRefresh} />
-      
-      <button 
-        className="split-toggle-btn"
-        onClick={() => setSplitModalOpen(true)}
-        disabled={friends.length === 0}
-      >
-        Split Between Friends
-      </button>
-
+      <div className="home">
+        <div className="add-friend-form2">
+        <h2>Split between</h2>
+          <button
+            className="split-toggle-btn"
+            onClick={() => setSplitModalOpen(true)}
+            disabled={friends.length === 0}
+          >
+            Split Between Friends
+          </button>
+        </div>
+      </div>
       <SplitModal
         isOpen={splitModalOpen}
         onClose={() => setSplitModalOpen(false)}

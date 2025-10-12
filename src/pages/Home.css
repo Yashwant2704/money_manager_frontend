@@ -9,6 +9,7 @@
 }
 
 .home .add-friend-form,
+.home .add-friend-form2,
 .home .friend-list {
   background-color: var(--secondary-color);
   padding: 1.5rem;
