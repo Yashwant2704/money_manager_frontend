@@ -2,14 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Triangle } from "react-loader-spinner";
-import "./FriendAccount.css";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
 import { Toaster, toast } from 'react-hot-toast';
-// import qr from "../assets/qr.jpg";
-// import qr_mbk from "../assets/qr_mbk.jpg";
 import qr_mbk from "../assets/qr_mbk.png";
-// import qr_mbk from "../assets/qr_mbk.svg";
+import SettleModal from "./SettleModal";
+import "./FriendAccount.css";
 
 function FriendAccount({ friend, refresh }) {
   const [amount, setAmount] = useState("");
@@ -17,6 +13,7 @@ function FriendAccount({ friend, refresh }) {
   const [loading, setLoading] = useState(false);
   const [note, setNote] = useState("");
   const [toggleQr, setQr] = useState(false);
+  const [settleModalOpen, setSettleModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const printRef = useRef(null);
@@ -111,26 +108,96 @@ function FriendAccount({ friend, refresh }) {
     }
   };
 
+  const handleSettleClick = () => {
+    console.log("Settle Clicked");
+    // Check if there's any balance to settle - FIXED CONDITION
+    if (friend.balance === 0 || friend.balance === null || friend.balance === undefined) {
+      return toast.error('No balance to settle', {
+        style: {
+          border: '3px solid #bb86fc',
+          padding: '16px',
+          color: '#ffffff',
+          background: '#272727'
+        },
+        iconTheme: {
+          primary: '#bb86fc',
+          secondary: '#272727',
+        },
+      });
+    }
+    setSettleModalOpen(true);
+  };
+
+  const handleSettleConfirm = async (paymentMethod) => {
+    const headers = getAuthHeaders();
+    if (!headers) return;
+
+    setLoading(true);
+    try {
+      // Calculate the settlement amount (opposite of current balance to make it zero)
+      const settlementAmount = -friend.balance;
+      const settlementNote = `Settled (${paymentMethod})`;
+
+      await axios.post(
+        `${import.meta.env.VITE_API_BASE}/friends/transaction/${friend._id}`,
+        {
+          amount: settlementAmount,
+          note: settlementNote,
+        },
+        { headers }
+      );
+
+      toast.success(`Balance settled successfully via ${paymentMethod}!`, {
+        style: {
+          border: '3px solid #bb86fc',
+          padding: '16px',
+          color: '#ffffff',
+          background: '#272727'
+        },
+        iconTheme: {
+          primary: '#bb86fc',
+          secondary: '#272727',
+        },
+      });
+
+      refresh();
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        toast.error('Session expired. Please login again.', {
+          style: {
+            border: '3px solid #bb86fc',
+            padding: '16px',
+            color: '#ffffff',
+            background: '#272727'
+          },
+          iconTheme: {
+            primary: '#ffffff',
+            secondary: '#272727',
+          },
+        });
+        localStorage.removeItem("token");
+        navigate("/login");
+      } else {
+        console.error(err);
+        toast.error('Settlement failed. Please try again.', {
+          style: {
+            border: '3px solid #bb86fc',
+            padding: '16px',
+            color: '#ffffff',
+            background: '#272727'
+          },
+          iconTheme: {
+            primary: '#ffffff',
+            secondary: '#272727',
+          },
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handlePrint = async () => {
-    // const element = printRef.current;
-    // if (!element) return;
-    // const canvas = await html2canvas(element, {
-    //   scale: 2,
-    // });
-    // const data = canvas.toDataURL("image/png");
-
-    // const pdf = new jsPDF({
-    //   orientation: "portrait",
-    //   unit: "px",
-    //   format: "a4",
-    // });
-
-    // const imgProperties = pdf.getImageProperties(data);
-    // const pdfWidth = pdf.internal.pageSize.getWidth();
-    // const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
-
-    // pdf.addImage(data, "PNG", 0, 0, pdfWidth, pdfHeight);
-    // pdf.save("Balance.pdf");
     window.print();
   };
 
@@ -176,7 +243,7 @@ function FriendAccount({ friend, refresh }) {
     try {
       await axios.post(
         `${import.meta.env.VITE_API_BASE}/email`,
-        { friend }, // entire friend object includes transactions
+        { friend },
         { headers }
       );
       toast.success('Mail sent!', {
@@ -252,6 +319,13 @@ function FriendAccount({ friend, refresh }) {
               disabled={loading}
             >
               They paid
+            </button>
+            <button 
+              className="btn settle-btn"
+              onClick={handleSettleClick}
+              disabled={loading || friend.balance === 0 || friend.balance === null || friend.balance === undefined}
+            >
+              Settle
             </button>
           </div>
         </div>
@@ -334,6 +408,14 @@ function FriendAccount({ friend, refresh }) {
           </div>
         )}
       </div>
+
+      {/* Settle Modal */}
+      <SettleModal
+        isOpen={settleModalOpen}
+        onClose={() => setSettleModalOpen(false)}
+        onConfirm={handleSettleConfirm}
+        friend={friend}
+      />
     </div>
   );
 }
