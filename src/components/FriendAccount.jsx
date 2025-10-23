@@ -5,6 +5,7 @@ import { Triangle } from "react-loader-spinner";
 import { Toaster, toast } from 'react-hot-toast';
 import qr_mbk from "../assets/qr_mbk.png";
 import SettleModal from "./SettleModal";
+import ActionChoiceModal from "./ActionChoiceModal";
 import "./FriendAccount.css";
 
 function FriendAccount({ friend, refresh }) {
@@ -14,6 +15,9 @@ function FriendAccount({ friend, refresh }) {
   const [note, setNote] = useState("");
   const [toggleQr, setQr] = useState(false);
   const [settleModalOpen, setSettleModalOpen] = useState(false);
+  const [actionModalOpen, setActionModalOpen] = useState(false);
+  const [transactionsToAction, setTransactionsToAction] = useState([]);
+  const [actionType, setActionType] = useState(null); // "print" or "mail"
   const navigate = useNavigate();
 
   const printRef = useRef(null);
@@ -109,8 +113,6 @@ function FriendAccount({ friend, refresh }) {
   };
 
   const handleSettleClick = () => {
-    console.log("Settle Clicked");
-    // Check if there's any balance to settle - FIXED CONDITION
     if (friend.balance === 0 || friend.balance === null || friend.balance === undefined) {
       return toast.error('No balance to settle', {
         style: {
@@ -134,7 +136,6 @@ function FriendAccount({ friend, refresh }) {
 
     setLoading(true);
     try {
-      // Calculate the settlement amount (opposite of current balance to make it zero)
       const settlementAmount = -friend.balance;
       const settlementNote = `Settled (${paymentMethod})`;
 
@@ -197,53 +198,176 @@ function FriendAccount({ friend, refresh }) {
     }
   };
 
-  const handlePrint = async () => {
-    window.print();
+  // Helper to print selected transactions in a new window
+  const printSelectedTransactions = (transactions) => {
+    const printWindow = window.open("", "_blank", "width=800,height=600");
+    if (!printWindow) {
+      toast.error("Pop-up blocked. Please allow pop-ups for this site to print.");
+      return;
+    }
+  
+    const html = `
+    <html>
+    <head>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+      <title>Print Transactions - ${friend.name}</title>
+      <style>
+        body {
+          font-family: 'Poppins', sans-serif;
+          padding: 20px;
+          background-color: #1F1B24;
+          color: #ffffff;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+        }
+        h1 {
+          margin-bottom: 0.2em;
+        }
+        h3 {
+          margin-top: 0;
+          color: #BB86FC;
+        }
+        table.transactions-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 1rem;
+          background-color: #1F1B24;
+          border-radius: 0.5em;
+          overflow: hidden;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+          flex-grow: 1; /* fill available vertical space for layout */
+        }
+        table.transactions-table th,
+        table.transactions-table td {
+          padding: 14px 18px;
+          text-align: left;
+          border-bottom: 1px solid #984bf7;
+        }
+        table.transactions-table th {
+          background: linear-gradient(90deg, #831dff90, #984bf7);
+          color: #fff;
+          font-weight: bold;
+          letter-spacing: 1px;
+        }
+        table.transactions-table tr {
+          cursor: pointer;
+        }
+        table.transactions-table td:first-child,
+        table.transactions-table th:first-child {
+          border-left: none;
+        }
+        table.transactions-table td:last-child,
+        table.transactions-table th:last-child {
+          border-right: none;
+        }
+        .light-purple {
+          color: #BB86FC;
+        }
+        .footer {
+          margin-top: 2rem;
+          text-align: center;
+          padding-top: 12px;
+          border-top: 1px solid #984bf7cc;
+          font-size: 0.9rem;
+          color: #bbb;
+          user-select: none;
+        }
+        .footer p {
+          margin: 4px 0;
+          border-bottom: 3px solid #984bf7cc;
+          display: inline;
+          padding-bottom: 10px;
+      }
+      </style>
+    </head>
+    <body>
+      <h1>${friend.name}</h1>
+      <h3>Current balance: <span class="light-purple">₹${friend.balance}</span></h3>
+      <table class="transactions-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${transactions.map(txn => `
+            <tr>
+              <td>${new Date(txn.date).toLocaleDateString('en-GB')}</td>
+              <td>₹${txn.amount}</td>
+              <td>${txn.note}</td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+      <div class="footer">
+        <p>Y-MoneyManager</p>
+      </div>
+      <script>
+        window.onload = function () {
+          window.print();
+          setTimeout(() => window.close(), 100);
+        };
+      </script>
+    </body>
+  </html>
+  
+    `;
+  
+    printWindow.document.write(html);
+    printWindow.document.close();
+  };
+  
+  // ActionChoiceModal invocation handlers
+
+  const actionTypePrint = () => {
+    setActionType("print");
+    setTransactionsToAction(friend.transactions || []);
+    setActionModalOpen(true);
   };
 
-  const ShowQr = () => {
-    if (!friend.balance || friend.balance <= 0) return toast.error('No balance', {
-      style: {
-        border: '3px solid #bb86fc',
-        padding: '16px',
-        color: '#ffffff',
-        background: '#272727'
-      },
-      iconTheme: {
-        primary: '#bb86fc',
-        secondary: '#272727',
-      },
-    });
-    setQr(!toggleQr);
+  const actionTypeMail = () => {
+    setActionType("mail");
+    setTransactionsToAction(friend.transactions || []);
+    setActionModalOpen(true);
   };
 
-  const confirmSendMail = () => {
-    if (window.confirm("Are you sure you want to send email?")) {
-      handleSendEmail();
+  const handleActionConfirm = async (selectedTransactions) => {
+    setActionModalOpen(false);
+    if (!selectedTransactions || selectedTransactions.length === 0) {
+      toast.error(`No transactions selected to ${actionType}`, {
+        style: {
+          border: '3px solid #bb86fc',
+          padding: '16px',
+          color: '#ffffff',
+          background: '#272727'
+        },
+        iconTheme: {
+          primary: '#bb86fc',
+          secondary: '#272727',
+        },
+      });
+      return;
+    }
+
+    if (actionType === "print") {
+      printSelectedTransactions(selectedTransactions);
+    } else if (actionType === "mail") {
+      await sendMailWithSelected(selectedTransactions);
     }
   };
 
-  const handleSendEmail = async () => {
-    if (!friend.balance || friend.balance <= 0) toast.error('No balance', {
-      style: {
-        border: '3px solid #bb86fc',
-        padding: '16px',
-        color: '#ffffff',
-        background: '#272727'
-      },
-      iconTheme: {
-        primary: '#bb86fc',
-        secondary: '#272727',
-      },
-    });
+  const sendMailWithSelected = async (selectedTransactions) => {
     const headers = getAuthHeaders();
     if (!headers) return;
-
+  
     setMailLoading(true);
     try {
       await axios.post(
-        `${import.meta.env.VITE_API_BASE}/email`,
-        { friend },
+        `${import.meta.env.VITE_API_BASE}/email/selected`, // Updated endpoint
+        { friend, selectedTransactions }, // Send selected transactions
         { headers }
       );
       toast.success('Mail sent!', {
@@ -275,10 +399,33 @@ function FriendAccount({ friend, refresh }) {
     } finally {
       setMailLoading(false);
     }
+  };  
+
+  const ShowQr = () => {
+    if (!friend.balance || friend.balance <= 0) return toast.error('No balance', {
+      style: {
+        border: '3px solid #bb86fc',
+        padding: '16px',
+        color: '#ffffff',
+        background: '#272727'
+      },
+      iconTheme: {
+        primary: '#bb86fc',
+        secondary: '#272727',
+      },
+    });
+    setQr(!toggleQr);
+  };
+
+  const confirmSendMail = () => {
+    if (window.confirm("Are you sure you want to send email?")) {
+      actionTypeMail();
+    }
   };
 
   return (
     <div className="friend-account" ref={printRef}>
+      <Toaster position="top-right" />
       <div className="account">
         <h2 className="friend-name">
           {friend.name}
@@ -320,7 +467,7 @@ function FriendAccount({ friend, refresh }) {
             >
               They paid
             </button>
-            <button 
+            <button
               className="btn settle-btn"
               onClick={handleSettleClick}
               disabled={loading || friend.balance === 0 || friend.balance === null || friend.balance === undefined}
@@ -369,12 +516,13 @@ function FriendAccount({ friend, refresh }) {
           )}
         </div>
       </div>
+
       <div className="center flex-col pt-20">
         <div className="btn-con center">
           <button onClick={ShowQr} className="noprint">
             {toggleQr ? "Hide QR" : "Show QR"}
           </button>
-          <button onClick={handlePrint} className="noprint">
+          <button onClick={actionTypePrint} className="noprint">
             Print
           </button>
           {!mailLoading && (
@@ -415,6 +563,16 @@ function FriendAccount({ friend, refresh }) {
         onClose={() => setSettleModalOpen(false)}
         onConfirm={handleSettleConfirm}
         friend={friend}
+      />
+
+      {/* ActionChoiceModal for Print or Mail */}
+      <ActionChoiceModal
+        isOpen={actionModalOpen}
+        onClose={() => setActionModalOpen(false)}
+        onConfirm={handleActionConfirm}
+        transactions={transactionsToAction}
+        title={`Select Transactions to ${actionType === "mail" ? "Email" : "Print"}`}
+        actionLabel={actionType === "mail" ? "Send Mail" : "Print"}
       />
     </div>
   );

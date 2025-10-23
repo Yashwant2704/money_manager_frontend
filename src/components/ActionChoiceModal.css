@@ -1,0 +1,115 @@
+.action-choice-modal-overlay {
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(25, 24, 30, 0.7);
+    padding: 10px;
+  }
+  
+  .action-choice-modal {
+    background: #191824;
+    color: #fff;
+    border-radius: 10px;
+    max-width: 380px;
+    min-width: 320px;
+    width: 100%;
+    box-shadow: 0 6px 32px #000c;
+    padding: 18px 20px 16px 20px;
+    animation: fadeIn 0.25s;
+  }
+  
+  .action-choice-modal h2 {
+    margin-top: 0;
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: #bb86fc;
+  }
+  
+  .choice-section {
+    display: flex;
+    gap: 18px;
+    margin-bottom: 15px;
+  }
+  .choice-section label {
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .txn-select-list {
+    max-height: 130px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    background: #231b36;
+    border: 1px solid #bb86fc;
+    border-radius: 6px;
+    padding: 5px;
+  }
+  
+  .txn-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0 0 6px 0;
+    font-size: 0.92rem;
+    cursor: pointer;
+  }
+  
+  .txn-row input[type="checkbox"] {
+    accent-color: #bb86fc;
+  }
+  
+  .txn-empty {
+    padding: 12px 0;
+    text-align: center;
+    color: #aaa;
+  }
+  
+  .action-choice-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .choice-cancel-btn, .choice-confirm-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .choice-cancel-btn {
+    background: #2d2941;
+    color: #bb86fc;
+    border: 1px solid #bb86fc;
+  }
+  
+  .choice-cancel-btn:hover {
+    background: #201e2e;
+  }
+  
+  .choice-confirm-btn {
+    background: linear-gradient(90deg, #bb86fc, #7e60ff);
+    color: #201e2e;
+    border: none;
+  }
+  
+  .choice-confirm-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  @keyframes fadeIn {
+    from { transform: translateY(60px) scale(0.98); opacity: 0.3; }
+    to { transform: none; opacity: 1; }
+  }
+  
