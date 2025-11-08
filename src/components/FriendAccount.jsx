@@ -210,7 +210,7 @@ function FriendAccount({ friend, refresh }) {
     <html>
     <head>
       <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
-      <title>Print Transactions - ${friend.name}</title>
+      <title>${friend.name}'s Account - Y-MoneyManager</title>
       <style>
         body {
           font-family: 'Poppins', sans-serif;
@@ -220,7 +220,6 @@ function FriendAccount({ friend, refresh }) {
           margin: 0;
           display: flex;
           flex-direction: column;
-          min-height: 100vh;
         }
         h1 {
           margin-bottom: 0.2em;
@@ -232,18 +231,21 @@ function FriendAccount({ friend, refresh }) {
         table.transactions-table {
           width: 100%;
           border-collapse: collapse;
+          table-layout: fixed;
           margin-top: 1rem;
           background-color: #1F1B24;
           border-radius: 0.5em;
           overflow: hidden;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-          flex-grow: 1; /* fill available vertical space for layout */
         }
         table.transactions-table th,
         table.transactions-table td {
-          padding: 14px 18px;
+          padding: 10px 10px;        /* Reduced padding */
           text-align: left;
           border-bottom: 1px solid #984bf7;
+          font-size: 15px;          /* Adjust size if needed */
+          max-width: 180px;
+          word-break: break-word;
         }
         table.transactions-table th {
           background: linear-gradient(90deg, #831dff90, #984bf7);
@@ -251,6 +253,7 @@ function FriendAccount({ friend, refresh }) {
           font-weight: bold;
           letter-spacing: 1px;
         }
+        
         table.transactions-table tr {
           cursor: pointer;
         }
