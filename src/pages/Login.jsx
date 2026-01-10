@@ -117,16 +117,22 @@ function Login() {
           )}
           {!loading && <button disabled={loading}>{isLogin ? 'Login' : 'Register'}</button>}
         </form>
-        <div style={{marginTop: '10px', cursor: 'pointer'}}>
+        <div style={{marginTop: '10px', cursor: 'pointer'}} className='options-menu'>
           {isLogin ? (
             <span onClick={() => setIsLogin(false)}>
-              New user? <b>Register here</b>
+              New user? <b className='light-purple'>Register here</b>
             </span>
           ) : (
             <span onClick={() => setIsLogin(true)}>
-              Already registered? <b>Login here</b>
+              Already registered? <b className='light-purple'>Login here</b>
             </span>
           )}
+          <p>
+    Forgot your password?{' '}
+    <a href="/forgot-password" style={{ color: '#bb86fc', textDecoration: 'none' }}>
+      Reset it here
+    </a>
+  </p>
         </div>
       </div>
     </div>

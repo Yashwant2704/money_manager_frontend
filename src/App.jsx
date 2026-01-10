@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import TransactionPage from './pages/TransactionPage';
 import ImpersonationBanner from './components/ImpersonationBanner';
+import ForgotPassword from './pages/ForgotPassword';
 import Footer from './components/Footer';
 import Banner from './components/Banner';
 import { Toaster } from 'react-hot-toast';
@@ -17,8 +18,11 @@ import TestPage from './pages/TestPage';
 function App() {
   const navigate = useNavigate();
   const userLoggedIn = localStorage.getItem('token');
+  const publicRoutes = ['/login', '/forgot-password'];
+
   useEffect(() => {
-    if (!userLoggedIn) {
+    const isPublicRoute = publicRoutes.includes(location.pathname);
+    if (!userLoggedIn && !isPublicRoute) {
       navigate('/login'); // ✅ Use inside useEffect
     }
   }, [userLoggedIn, navigate]);
@@ -54,6 +58,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/friend/:id" element={<FriendPage />} />
         <Route path="/transaction/:id" element={<TransactionPage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
       <Footer />
     </div>

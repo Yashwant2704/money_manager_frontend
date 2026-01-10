@@ -428,7 +428,7 @@ function FriendAccount({ friend, refresh }) {
 
   return (
     <div className="friend-account" ref={printRef}>
-      <Toaster position="top-right" />
+      <Toaster position="top-center" />
       <div className="account">
         <h2 className="friend-name">
           {friend.name}
