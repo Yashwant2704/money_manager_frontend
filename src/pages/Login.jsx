@@ -1,74 +1,40 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './Login.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Login.css";
 import { Triangle } from "react-loader-spinner";
-import logo from '../assets/money-logo.svg';
-import { Toaster, toast } from 'react-hot-toast';
+import logo from "../assets/money-logo.svg";
+import { Toaster, toast } from "react-hot-toast";
+
+const API_URL = `${import.meta.env.VITE_API_BASE}/auth`;
 
 function Login() {
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState(true);    // Toggle login/register
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [isRegister, setIsRegister] = useState(false);
 
-  // Backend API URL (change if needed)
-  const API_URL =`${import.meta.env.VITE_API_BASE}/auth`;
-;
-
-  const handleSubmit = async (e) => {
+  // LOGIN
+  const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+
     const email = e.target.email.value;
     const password = e.target.password.value;
 
     try {
-      const endpoint = isLogin ? `${API_URL}/login` : `${API_URL}/register`;
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
+      const res = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Error');
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
 
-      if (isLogin && data.token) {
-        // Save token from backend
-        localStorage.setItem('token', data.token);
-        toast.success('Login Successful!', {
-          style: {
-            border: '3px solid #bb86fc',
-            padding: '16px',
-            color: '#ffffff',
-            background: '#272727'
-          },
-          iconTheme: {
-            primary: '#ffffff',
-            secondary: '#272727',
-          },
-        });
-        navigate('/');
-      } else {
-        toast.success('Registration Successful!', {
-          style: {
-            border: '3px solid #bb86fc',
-            padding: '16px',
-            color: '#ffffff',
-            background: '#272727'
-          },
-          iconTheme: {
-            primary: '#ffffff',
-            secondary: '#272727',
-          },
-        });
-        setIsLogin(true);
-      }
-    } catch (err) {
-      setError(err.message);
-      toast.error(err.message, {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      toast.success("Login successful",
+      {
         style: {
           border: '3px solid #bb86fc',
           padding: '16px',
@@ -76,63 +42,173 @@ function Login() {
           background: '#272727'
         },
         iconTheme: {
-          primary: '#bb86fc',
+          primary: '#ffffff',
           secondary: '#272727',
         },
       });
+      navigate("/");
+    } catch (err) {
+      toast.error(err.message,
+        {
+          style: {
+            border: '3px solid #bb86fc',
+            padding: '16px',
+            color: '#ffffff',
+            background: '#272727'
+          },
+          iconTheme: {
+            primary: '#ffffff',
+            secondary: '#272727',
+          },
+        });
     }
+
+    setLoading(false);
+  };
+
+  // REGISTER
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    try {
+      const res = await fetch(`${API_URL}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
+
+      toast.success("Registration successful. Please login.",
+      {
+        style: {
+          border: '3px solid #bb86fc',
+          padding: '16px',
+          color: '#ffffff',
+          background: '#272727'
+        },
+        iconTheme: {
+          primary: '#ffffff',
+          secondary: '#272727',
+        },
+      });
+      setIsRegister(false);
+    } catch (err) {
+      toast.error(err.message, 
+        {
+          style: {
+            border: '3px solid #bb86fc',
+            padding: '16px',
+            color: '#ffffff',
+            background: '#272727'
+          },
+          iconTheme: {
+            primary: '#ffffff',
+            secondary: '#272727',
+          },
+        });
+    }
+
     setLoading(false);
   };
 
   return (
-    <div className='Login'>
+    <div className="Login">
+      <Toaster />
       <div className="login-container">
-        <img src={logo} alt="logo" className='logo-login' />
-        <h1>{isLogin ? 'Login' : 'Register'}</h1>
-        <form className="login-form" onSubmit={handleSubmit}>
-          <input
-            className='login-input'
-            type="email"
-            name='email'
-            placeholder="Email"
-            required
-          />
-          <input
-            className='login-input'
-            type="password"
-            name='password'
-            placeholder="Password"
-            required
-          />
-          {loading && (
-                      <div className="center">
-                        <Triangle
-                          visible={true}
-                          height="50"
-                          width="50"
-                          color="#984bf7"
-                          ariaLabel="triangle-loading"
-                        />
-                      </div>
-          )}
-          {!loading && <button disabled={loading}>{isLogin ? 'Login' : 'Register'}</button>}
-        </form>
-        <div style={{marginTop: '10px', cursor: 'pointer'}} className='options-menu'>
-          {isLogin ? (
-            <span onClick={() => setIsLogin(false)}>
-              New user? <b className='light-purple'>Register here</b>
+        <img src={logo} alt="logo" className="logo-login" />
+
+        <h1>{isRegister ? "Register" : "Login"}</h1>
+
+        {isRegister ? (
+          // REGISTER FORM
+          <form className="login-form" onSubmit={handleRegister}>
+            <div className="fields">
+              <div className="horizontal">
+                <input
+                  className="login-input"
+                  type="text"
+                  name="name"
+                  placeholder="Your Name"
+                  required
+                />
+
+                <input
+                  className="login-input"
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  required
+                />
+              </div>
+
+              <input
+                className="login-input login-password"
+                type="password"
+                name="password"
+                placeholder="Password"
+                required
+              />
+            </div>
+
+            {loading ? (
+              <Triangle height="50" width="50" color="#984bf7" />
+            ) : (
+              <button type="submit">Register</button>
+            )}
+          </form>
+        ) : (
+          // LOGIN FORM
+          <form className="login-form" onSubmit={handleLogin}>
+            <input
+              className="login-input"
+              type="email"
+              name="email"
+              placeholder="Email"
+              required
+            />
+
+            <input
+              className="login-input"
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+            />
+
+            {loading ? (
+              <Triangle height="50" width="50" color="#984bf7" />
+            ) : (
+              <button type="submit">Login</button>
+            )}
+          </form>
+        )}
+
+        <div className="options-menu">
+          {isRegister ? (
+            <span onClick={() => setIsRegister(false)}>
+              Already registered? <b className="light-purple">Login</b>
             </span>
           ) : (
-            <span onClick={() => setIsLogin(true)}>
-              Already registered? <b className='light-purple'>Login here</b>
+            <span onClick={() => setIsRegister(true)}>
+              New user? <b className="light-purple">Register</b>
             </span>
           )}
-          <p>
-    Forgot your password?{' '}
-    <a href="/forgot-password" style={{ color: '#bb86fc', textDecoration: 'none' }}>
-      Reset it here
-    </a>
-  </p>
+
+          {!isRegister && (
+            <p>
+              Forgot your password?{" "}
+              <a href="/forgot-password" className="light-purple">
+                Reset it here
+              </a>
+            </p>
+          )}
         </div>
       </div>
     </div>

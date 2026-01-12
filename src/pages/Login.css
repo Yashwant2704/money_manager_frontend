@@ -26,7 +26,7 @@
 
 .login-input{
   margin: 5px 0;
-  padding: 10px;
+  padding: 15px;
   background-color: #1F1B24;
   color: #E0E0E0;
   border: 2px solid #831dff90;
@@ -64,4 +64,20 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+.horizontal{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.fields{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.login-password{
+  width: 60%;
+  margin-top: 10px;
 }

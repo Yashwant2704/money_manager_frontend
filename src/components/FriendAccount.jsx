@@ -365,12 +365,13 @@ function FriendAccount({ friend, refresh }) {
   const sendMailWithSelected = async (selectedTransactions) => {
     const headers = getAuthHeaders();
     if (!headers) return;
+    const user = JSON.parse(localStorage.getItem("user"));
   
     setMailLoading(true);
     try {
       await axios.post(
         `${import.meta.env.VITE_API_BASE}/email/selected`, // Updated endpoint
-        { friend, selectedTransactions }, // Send selected transactions
+        { friend, selectedTransactions, user }, // Send selected transactions
         { headers }
       );
       toast.success('Mail sent!', {
