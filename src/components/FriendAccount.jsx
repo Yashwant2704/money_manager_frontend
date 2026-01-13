@@ -4,6 +4,8 @@ import axios from "axios";
 import { Triangle } from "react-loader-spinner";
 import { Toaster, toast } from 'react-hot-toast';
 import qr_mbk from "../assets/qr_mbk.png";
+import qr from "../assets/qr.jpeg";
+import qr_bhim from "../assets/qr_bhim.jpeg";
 import SettleModal from "./SettleModal";
 import ActionChoiceModal from "./ActionChoiceModal";
 import "./FriendAccount.css";
@@ -14,6 +16,7 @@ function FriendAccount({ friend, refresh }) {
   const [loading, setLoading] = useState(false);
   const [note, setNote] = useState("");
   const [toggleQr, setQr] = useState(false);
+  const [qrNumber, setQrNumber] = useState(2);
   const [settleModalOpen, setSettleModalOpen] = useState(false);
   const [actionModalOpen, setActionModalOpen] = useState(false);
   const [transactionsToAction, setTransactionsToAction] = useState([]);
@@ -421,6 +424,12 @@ function FriendAccount({ friend, refresh }) {
     setQr(!toggleQr);
   };
 
+  const handleQrNumber = () => {
+    if (qrNumber === 0) setQrNumber(1);
+    else if (qrNumber === 1) setQrNumber(2);
+    else setQrNumber(0);
+  };
+
   const confirmSendMail = () => {
     if (window.confirm("Are you sure you want to send email?")) {
       actionTypeMail();
@@ -551,8 +560,17 @@ function FriendAccount({ friend, refresh }) {
           )}
         </div>
         {toggleQr && (
-          <div className="qr-details pt-20 noprint">
-            <img src={qr_mbk} alt="qr" height={300} width={300} />
+          <div className="qr-details pt-20 noprint" onClick={handleQrNumber}>
+            {/* <h2 className="center">Click on qr to change</h2> */}
+            {qrNumber === 0 && (
+              <img src={qr} alt="qr" height={300} width={320} style={{ border: "3px solid #984bf7", borderRadius: "10px" }} />
+            )}
+            {qrNumber === 1 && (
+              <img src={qr_mbk} alt="qr" height={300} width={300} style={{ border: "3px solid #984bf7", borderRadius: "10px" }}/>
+            )}
+            {qrNumber === 2 && (
+              <img src={qr_bhim} alt="qr" height={300} width={300} style={{ border: "3px solid #984bf7", borderRadius: "10px", padding: "10px" }}/>
+            )}
             <p className="white font-20px mb-30px center">
               Pay&nbsp;
               <span className="friend-balance">₹{friend.balance}</span>

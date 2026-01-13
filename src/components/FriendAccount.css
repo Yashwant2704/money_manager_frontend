@@ -119,7 +119,8 @@
 }
 
 .qr-details{
-  height: 23em;
+  /* height: 40em; */
+  cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {
