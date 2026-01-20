@@ -8,6 +8,7 @@ import qr from "../assets/qr.jpeg";
 import qr_bhim from "../assets/qr_bhim.jpeg";
 import SettleModal from "./SettleModal";
 import ActionChoiceModal from "./ActionChoiceModal";
+import QRCode from "react-qr-code";
 import "./FriendAccount.css";
 
 function FriendAccount({ friend, refresh }) {
@@ -16,13 +17,14 @@ function FriendAccount({ friend, refresh }) {
   const [loading, setLoading] = useState(false);
   const [note, setNote] = useState("");
   const [toggleQr, setQr] = useState(false);
-  const [qrNumber, setQrNumber] = useState(2);
+  const [qrNumber, setQrNumber] = useState(1);
   const [settleModalOpen, setSettleModalOpen] = useState(false);
   const [actionModalOpen, setActionModalOpen] = useState(false);
   const [transactionsToAction, setTransactionsToAction] = useState([]);
   const [actionType, setActionType] = useState(null); // "print" or "mail"
   const navigate = useNavigate();
-
+  const QrUrl = "upi://pay?pa=7350998157@upi&pn=Yashwant%20Nagarkar";
+  var qrData = QrUrl+"&am="+friend.balance+"&tn=Yashwant Settle";
   const printRef = useRef(null);
 
   useEffect(() => {
@@ -438,7 +440,6 @@ function FriendAccount({ friend, refresh }) {
 
   return (
     <div className="friend-account" ref={printRef}>
-      <Toaster position="top-center" />
       <div className="account">
         <h2 className="friend-name">
           {friend.name}
@@ -566,12 +567,14 @@ function FriendAccount({ friend, refresh }) {
               <img src={qr} alt="qr" height={300} width={320} style={{ border: "3px solid #984bf7", borderRadius: "10px" }} />
             )}
             {qrNumber === 1 && (
-              <img src={qr_mbk} alt="qr" height={300} width={300} style={{ border: "3px solid #984bf7", borderRadius: "10px" }}/>
+              <div>
+              <QRCode value={qrData} className="qr"/>
+              </div>
             )}
             {qrNumber === 2 && (
               <img src={qr_bhim} alt="qr" height={300} width={300} style={{ border: "3px solid #984bf7", borderRadius: "10px", padding: "10px" }}/>
             )}
-            <p className="white font-20px mb-30px center">
+            <p className="white font-20px center">
               Pay&nbsp;
               <span className="friend-balance">₹{friend.balance}</span>
             </p>
