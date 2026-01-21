@@ -25,7 +25,7 @@ function FriendAccount({ friend, refresh }) {
   const navigate = useNavigate();
   var userName = JSON.parse(localStorage.getItem("user")).name;
   const QrUrl = "upi://pay?pa=7350998157@upi&pn=Yashwant%20Nagarkar";
-  var qrData = QrUrl+"&am="+friend.balance+"&tn="+userName+" Settle";
+  var qrData = QrUrl+"&am="+friend.balance+"&tn="+friend.name+" Settle";
   const printRef = useRef(null);
 
   useEffect(() => {
@@ -211,7 +211,15 @@ function FriendAccount({ friend, refresh }) {
       toast.error("Pop-up blocked. Please allow pop-ups for this site to print.");
       return;
     }
-  
+    const QrUrl = "upi://pay?pa=7350998157@upi&pn=Yashwant%20Nagarkar";
+    const qrData = `${QrUrl}&am=${friend.balance}&tn=${encodeURIComponent(
+      friend.name + " Settle"
+    )}`;
+    
+    const qrImageUrl =
+      "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" +
+      encodeURIComponent(qrData);
+    
     const html = `
     <html>
     <head>
@@ -311,6 +319,22 @@ function FriendAccount({ friend, refresh }) {
             </tr>`).join('')}
         </tbody>
       </table>
+      <div style="margin-top: 30px; text-align: center;">
+  <p style="margin-bottom: 10px; color: #BB86FC; font-size: 15px;">
+    Scan to settle via UPI
+  </p>
+  <img
+    src="${qrImageUrl}"
+    alt="UPI QR"
+    width="180"
+    height="180"
+    style="border: 2px solid #984bf7; border-radius: 10px; background: #fff; padding: 6px;"
+  />
+  <p style="margin-top: 8px; font-size: 12px; color: #aaa;">
+    Google Pay · PhonePe · Paytm · BHIM
+  </p>
+</div>
+
       <div class="footer">
         <p>Y-MoneyManager</p>
       </div>
