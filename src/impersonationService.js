@@ -1,5 +1,4 @@
 const API_URL = `${import.meta.env.VITE_API_BASE}`;
-console.log('API URL:', API_URL); // Debug log
 
 class ImpersonationService {
   // Start impersonating a user

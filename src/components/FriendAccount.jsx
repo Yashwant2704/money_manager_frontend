@@ -23,8 +23,9 @@ function FriendAccount({ friend, refresh }) {
   const [transactionsToAction, setTransactionsToAction] = useState([]);
   const [actionType, setActionType] = useState(null); // "print" or "mail"
   const navigate = useNavigate();
+  var userName = JSON.parse(localStorage.getItem("user")).name;
   const QrUrl = "upi://pay?pa=7350998157@upi&pn=Yashwant%20Nagarkar";
-  var qrData = QrUrl+"&am="+friend.balance+"&tn=Yashwant Settle";
+  var qrData = QrUrl+"&am="+friend.balance+"&tn="+userName+" Settle";
   const printRef = useRef(null);
 
   useEffect(() => {
@@ -429,6 +430,8 @@ function FriendAccount({ friend, refresh }) {
   const handleQrNumber = () => {
     if (qrNumber === 0) setQrNumber(1);
     else if (qrNumber === 1) setQrNumber(2);
+    else if (qrNumber === 2) setQrNumber(3);
+    else if (qrNumber === 3) setQrNumber(4);
     else setQrNumber(0);
   };
 
@@ -568,10 +571,20 @@ function FriendAccount({ friend, refresh }) {
             )}
             {qrNumber === 1 && (
               <div>
-              <QRCode value={qrData} className="qr"/>
+              <QRCode value={qrData} className="qr" level="L"/>
               </div>
             )}
             {qrNumber === 2 && (
+              <div>
+              <QRCode value={qrData} className="qr" level="M"/>
+              </div>
+            )}
+            {qrNumber === 3 && (
+              <div>
+              <QRCode value={qrData} className="qr" level="H"/>
+              </div>
+            )}
+            {qrNumber === 4 && (
               <img src={qr_bhim} alt="qr" height={300} width={300} style={{ border: "3px solid #984bf7", borderRadius: "10px", padding: "10px" }}/>
             )}
             <p className="white font-20px center">
