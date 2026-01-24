@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { signAmount } from "../utils/sign";
 import { Triangle } from "react-loader-spinner";
 import { Toaster, toast } from "react-hot-toast";
 import qr_mbk from "../assets/qr_mbk.png";
@@ -32,23 +33,43 @@ function FriendAccount({ friend, refresh }) {
     document.title = `${friend.name}'s Account - Y-MoneyManager`;
   }, [friend.name]);
 
-  const handlePayViaWhatsApp = () => {
+  const handlePayViaWhatsApp = async () => {
+    console.log("[FRONTEND] Pay via WhatsApp clicked");
+  
     if (!friend.balance || friend.balance <= 0) {
+      console.log("[FRONTEND] ❌ Invalid balance:", friend.balance);
       toast.error("No balance to settle");
       return;
     }
-
+  
+    const amount = Number(friend.balance).toFixed(2);
+    console.log("[FRONTEND] Amount:", amount);
+  
+    const { ts, sig } = await signAmount(amount);
+  
+    console.log("[FRONTEND] Timestamp:", ts);
+    console.log("[FRONTEND] Signature:", sig);
+  
     const payLink =
       `${import.meta.env.VITE_API_BASE}/pay` +
-      `?amount=${friend.balance}` +
-      `&name=${encodeURIComponent(friend.name)}`;
-
-    const message = `Click the link below to settle payment 👇\n${payLink}`;
-
-    const waLink = `https://wa.me/917350998157?text=${encodeURIComponent(
-      message
-    )}`;
-
+      `?amount=${amount}` +
+      `&ts=${ts}` +
+      `&sig=${sig}`;
+  
+    console.log("[FRONTEND] Pay link:", payLink);
+  
+    const isiOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    console.log("[FRONTEND] iOS detected:", isiOS);
+  
+    const message = isiOS
+      ? `iPhone users:\n1. Long-press link\n2. Open in Safari\n\n${payLink}`
+      : `Click to pay 👇\n${payLink}`;
+  
+    const waLink =
+      `https://wa.me/917350998157?text=${encodeURIComponent(message)}`;
+  
+    console.log("[FRONTEND] WhatsApp link:", waLink);
+  
     window.open(waLink, "_blank");
   };
 
@@ -631,6 +652,16 @@ function FriendAccount({ friend, refresh }) {
           onClick={handlePayViaWhatsApp}
         >
           Pay via WhatsApp
+        </button>
+        <button
+          className="btn settle-btn"
+          onClick={() => {
+            window.location.href = `upi://pay?pa=7350998157@upi&pn=Yashwant&am=${Number(
+              friend.balance
+            ).toFixed(2)}&cu=INR&tn=Payment`;
+          }}
+        >
+          Retry via UPI App
         </button>
 
         {toggleQr && (
