@@ -23,7 +23,6 @@ function FriendAccount({ friend, refresh }) {
   const [transactionsToAction, setTransactionsToAction] = useState([]);
   const [actionType, setActionType] = useState(null); // "print" or "mail"
   const navigate = useNavigate();
-  var userName = JSON.parse(localStorage.getItem("user")).name;
   const QrUrl = "upi://pay?pa=7350998157@upi&pn=Yashwant%20Nagarkar";
   var qrData = QrUrl+"&am="+friend.balance+"&tn="+friend.name+" Settle";
   const printRef = useRef(null);
@@ -328,7 +327,7 @@ function FriendAccount({ friend, refresh }) {
     alt="UPI QR"
     width="180"
     height="180"
-    style="border: 2px solid #984bf7; border-radius: 10px; background: #fff; padding: 6px;"
+    style="border: 2px solid #984bf7; border-radius: 10px; background: #fff; padding: 10px;"
   />
   <p style="margin-top: 8px; font-size: 12px; color: #aaa;">
     Google Pay · PhonePe · Paytm · BHIM
