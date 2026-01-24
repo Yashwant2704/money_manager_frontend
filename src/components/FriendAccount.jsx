@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Triangle } from "react-loader-spinner";
-import { Toaster, toast } from 'react-hot-toast';
+import { Toaster, toast } from "react-hot-toast";
 import qr_mbk from "../assets/qr_mbk.png";
 import qr from "../assets/qr.jpeg";
 import qr_bhim from "../assets/qr_bhim.jpeg";
@@ -24,26 +24,47 @@ function FriendAccount({ friend, refresh }) {
   const [actionType, setActionType] = useState(null); // "print" or "mail"
   const navigate = useNavigate();
   const QrUrl = "upi://pay?pa=7350998157@upi&pn=Yashwant%20Nagarkar";
-  var qrData = QrUrl+"&am="+friend.balance+"&tn="+friend.name+" Settle";
+  var qrData =
+    QrUrl + "&am=" + friend.balance + "&tn=" + friend.name + " Settle";
   const printRef = useRef(null);
 
   useEffect(() => {
     document.title = `${friend.name}'s Account - Y-MoneyManager`;
   }, [friend.name]);
 
+  const handlePayViaWhatsApp = () => {
+    if (!friend.balance || friend.balance <= 0) {
+      toast.error("No balance to settle");
+      return;
+    }
+
+    const payLink =
+      `${import.meta.env.VITE_API_BASE}/pay` +
+      `?amount=${friend.balance}` +
+      `&name=${encodeURIComponent(friend.name)}`;
+
+    const message = `Click the link below to settle payment 👇\n${payLink}`;
+
+    const waLink = `https://wa.me/917350998157?text=${encodeURIComponent(
+      message
+    )}`;
+
+    window.open(waLink, "_blank");
+  };
+
   const getAuthHeaders = () => {
     const token = localStorage.getItem("token");
     if (!token) {
-      toast.error('You must be logged in to perform this action.', {
+      toast.error("You must be logged in to perform this action.", {
         style: {
-          border: '3px solid #bb86fc',
-          padding: '16px',
-          color: '#ffffff',
-          background: '#272727'
+          border: "3px solid #bb86fc",
+          padding: "16px",
+          color: "#ffffff",
+          background: "#272727",
         },
         iconTheme: {
-          primary: '#bb86fc',
-          secondary: '#272727',
+          primary: "#bb86fc",
+          secondary: "#272727",
         },
       });
       navigate("/login");
@@ -53,18 +74,19 @@ function FriendAccount({ friend, refresh }) {
   };
 
   const handleTransaction = async (value) => {
-    if (!amount) return toast.error('Enter amount', {
-      style: {
-        border: '3px solid #bb86fc',
-        padding: '16px',
-        color: '#ffffff',
-        background: '#272727'
-      },
-      iconTheme: {
-        primary: '#bb86fc',
-        secondary: '#272727',
-      },
-    });
+    if (!amount)
+      return toast.error("Enter amount", {
+        style: {
+          border: "3px solid #bb86fc",
+          padding: "16px",
+          color: "#ffffff",
+          background: "#272727",
+        },
+        iconTheme: {
+          primary: "#bb86fc",
+          secondary: "#272727",
+        },
+      });
     const headers = getAuthHeaders();
     if (!headers) return;
 
@@ -83,32 +105,32 @@ function FriendAccount({ friend, refresh }) {
       refresh();
     } catch (err) {
       if (err.response && err.response.status === 401) {
-        toast.error('Session expired. Please login again.', {
+        toast.error("Session expired. Please login again.", {
           style: {
-            border: '3px solid #bb86fc',
-            padding: '16px',
-            color: '#ffffff',
-            background: '#272727'
+            border: "3px solid #bb86fc",
+            padding: "16px",
+            color: "#ffffff",
+            background: "#272727",
           },
           iconTheme: {
-            primary: '#ffffff',
-            secondary: '#272727',
+            primary: "#ffffff",
+            secondary: "#272727",
           },
         });
         localStorage.removeItem("token");
         navigate("/login");
       } else {
         console.error(err);
-        toast.error('Transaction failed. Please try again.', {
+        toast.error("Transaction failed. Please try again.", {
           style: {
-            border: '3px solid #bb86fc',
-            padding: '16px',
-            color: '#ffffff',
-            background: '#272727'
+            border: "3px solid #bb86fc",
+            padding: "16px",
+            color: "#ffffff",
+            background: "#272727",
           },
           iconTheme: {
-            primary: '#ffffff',
-            secondary: '#272727',
+            primary: "#ffffff",
+            secondary: "#272727",
           },
         });
       }
@@ -118,17 +140,21 @@ function FriendAccount({ friend, refresh }) {
   };
 
   const handleSettleClick = () => {
-    if (friend.balance === 0 || friend.balance === null || friend.balance === undefined) {
-      return toast.error('No balance to settle', {
+    if (
+      friend.balance === 0 ||
+      friend.balance === null ||
+      friend.balance === undefined
+    ) {
+      return toast.error("No balance to settle", {
         style: {
-          border: '3px solid #bb86fc',
-          padding: '16px',
-          color: '#ffffff',
-          background: '#272727'
+          border: "3px solid #bb86fc",
+          padding: "16px",
+          color: "#ffffff",
+          background: "#272727",
         },
         iconTheme: {
-          primary: '#bb86fc',
-          secondary: '#272727',
+          primary: "#bb86fc",
+          secondary: "#272727",
         },
       });
     }
@@ -155,46 +181,46 @@ function FriendAccount({ friend, refresh }) {
 
       toast.success(`Balance settled successfully via ${paymentMethod}!`, {
         style: {
-          border: '3px solid #bb86fc',
-          padding: '16px',
-          color: '#ffffff',
-          background: '#272727'
+          border: "3px solid #bb86fc",
+          padding: "16px",
+          color: "#ffffff",
+          background: "#272727",
         },
         iconTheme: {
-          primary: '#bb86fc',
-          secondary: '#272727',
+          primary: "#bb86fc",
+          secondary: "#272727",
         },
       });
 
       refresh();
     } catch (err) {
       if (err.response && err.response.status === 401) {
-        toast.error('Session expired. Please login again.', {
+        toast.error("Session expired. Please login again.", {
           style: {
-            border: '3px solid #bb86fc',
-            padding: '16px',
-            color: '#ffffff',
-            background: '#272727'
+            border: "3px solid #bb86fc",
+            padding: "16px",
+            color: "#ffffff",
+            background: "#272727",
           },
           iconTheme: {
-            primary: '#ffffff',
-            secondary: '#272727',
+            primary: "#ffffff",
+            secondary: "#272727",
           },
         });
         localStorage.removeItem("token");
         navigate("/login");
       } else {
         console.error(err);
-        toast.error('Settlement failed. Please try again.', {
+        toast.error("Settlement failed. Please try again.", {
           style: {
-            border: '3px solid #bb86fc',
-            padding: '16px',
-            color: '#ffffff',
-            background: '#272727'
+            border: "3px solid #bb86fc",
+            padding: "16px",
+            color: "#ffffff",
+            background: "#272727",
           },
           iconTheme: {
-            primary: '#ffffff',
-            secondary: '#272727',
+            primary: "#ffffff",
+            secondary: "#272727",
           },
         });
       }
@@ -207,18 +233,20 @@ function FriendAccount({ friend, refresh }) {
   const printSelectedTransactions = (transactions) => {
     const printWindow = window.open("", "_blank", "width=800,height=600");
     if (!printWindow) {
-      toast.error("Pop-up blocked. Please allow pop-ups for this site to print.");
+      toast.error(
+        "Pop-up blocked. Please allow pop-ups for this site to print."
+      );
       return;
     }
     const QrUrl = "upi://pay?pa=7350998157@upi&pn=Yashwant%20Nagarkar";
     const qrData = `${QrUrl}&am=${friend.balance}&tn=${encodeURIComponent(
       friend.name + " Settle"
     )}`;
-    
+
     const qrImageUrl =
       "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" +
       encodeURIComponent(qrData);
-    
+
     const html = `
     <html>
     <head>
@@ -300,7 +328,9 @@ function FriendAccount({ friend, refresh }) {
     </head>
     <body>
       <h1>${friend.name}</h1>
-      <h3>Current balance: <span class="light-purple">₹${friend.balance}</span></h3>
+      <h3>Current balance: <span class="light-purple">₹${
+        friend.balance
+      }</span></h3>
       <table class="transactions-table">
         <thead>
           <tr>
@@ -310,12 +340,16 @@ function FriendAccount({ friend, refresh }) {
           </tr>
         </thead>
         <tbody>
-          ${transactions.map(txn => `
+          ${transactions
+            .map(
+              (txn) => `
             <tr>
-              <td>${new Date(txn.date).toLocaleDateString('en-GB')}</td>
+              <td>${new Date(txn.date).toLocaleDateString("en-GB")}</td>
               <td>₹${txn.amount}</td>
               <td>${txn.note}</td>
-            </tr>`).join('')}
+            </tr>`
+            )
+            .join("")}
         </tbody>
       </table>
       <div style="margin-top: 30px; text-align: center;">
@@ -347,11 +381,11 @@ function FriendAccount({ friend, refresh }) {
   </html>
   
     `;
-  
+
     printWindow.document.write(html);
     printWindow.document.close();
   };
-  
+
   // ActionChoiceModal invocation handlers
 
   const actionTypePrint = () => {
@@ -371,14 +405,14 @@ function FriendAccount({ friend, refresh }) {
     if (!selectedTransactions || selectedTransactions.length === 0) {
       toast.error(`No transactions selected to ${actionType}`, {
         style: {
-          border: '3px solid #bb86fc',
-          padding: '16px',
-          color: '#ffffff',
-          background: '#272727'
+          border: "3px solid #bb86fc",
+          padding: "16px",
+          color: "#ffffff",
+          background: "#272727",
         },
         iconTheme: {
-          primary: '#bb86fc',
-          secondary: '#272727',
+          primary: "#bb86fc",
+          secondary: "#272727",
         },
       });
       return;
@@ -395,7 +429,7 @@ function FriendAccount({ friend, refresh }) {
     const headers = getAuthHeaders();
     if (!headers) return;
     const user = JSON.parse(localStorage.getItem("user"));
-  
+
     setMailLoading(true);
     try {
       await axios.post(
@@ -403,50 +437,51 @@ function FriendAccount({ friend, refresh }) {
         { friend, selectedTransactions, user }, // Send selected transactions
         { headers }
       );
-      toast.success('Mail sent!', {
+      toast.success("Mail sent!", {
         style: {
-          border: '3px solid #bb86fc',
-          padding: '16px',
-          color: '#ffffff',
-          background: '#272727'
+          border: "3px solid #bb86fc",
+          padding: "16px",
+          color: "#ffffff",
+          background: "#272727",
         },
         iconTheme: {
-          primary: '#bb86fc',
-          secondary: '#272727',
+          primary: "#bb86fc",
+          secondary: "#272727",
         },
       });
     } catch (err) {
       console.error("Email Error:", err.response?.data || err.message);
       toast.error(err.response?.data || err.message, {
         style: {
-          border: '3px solid #bb86fc',
-          padding: '16px',
-          color: '#ffffff',
-          background: '#272727'
+          border: "3px solid #bb86fc",
+          padding: "16px",
+          color: "#ffffff",
+          background: "#272727",
         },
         iconTheme: {
-          primary: '#bb86fc',
-          secondary: '#272727',
+          primary: "#bb86fc",
+          secondary: "#272727",
         },
       });
     } finally {
       setMailLoading(false);
     }
-  };  
+  };
 
   const ShowQr = () => {
-    if (!friend.balance || friend.balance <= 0) return toast.error('No balance', {
-      style: {
-        border: '3px solid #bb86fc',
-        padding: '16px',
-        color: '#ffffff',
-        background: '#272727'
-      },
-      iconTheme: {
-        primary: '#bb86fc',
-        secondary: '#272727',
-      },
-    });
+    if (!friend.balance || friend.balance <= 0)
+      return toast.error("No balance", {
+        style: {
+          border: "3px solid #bb86fc",
+          padding: "16px",
+          color: "#ffffff",
+          background: "#272727",
+        },
+        iconTheme: {
+          primary: "#bb86fc",
+          secondary: "#272727",
+        },
+      });
     setQr(!toggleQr);
   };
 
@@ -510,7 +545,12 @@ function FriendAccount({ friend, refresh }) {
             <button
               className="btn settle-btn"
               onClick={handleSettleClick}
-              disabled={loading || friend.balance === 0 || friend.balance === null || friend.balance === undefined}
+              disabled={
+                loading ||
+                friend.balance === 0 ||
+                friend.balance === null ||
+                friend.balance === undefined
+              }
             >
               Settle
             </button>
@@ -586,29 +626,52 @@ function FriendAccount({ friend, refresh }) {
             </div>
           )}
         </div>
+        <button
+          className="btn settle-btn noprint"
+          onClick={handlePayViaWhatsApp}
+        >
+          Pay via WhatsApp
+        </button>
+
         {toggleQr && (
           <div className="qr-details pt-20 noprint" onClick={handleQrNumber}>
             {/* <h2 className="center">Click on qr to change</h2> */}
             {qrNumber === 0 && (
-              <img src={qr} alt="qr" height={300} width={320} style={{ border: "3px solid #984bf7", borderRadius: "10px" }} />
+              <img
+                src={qr}
+                alt="qr"
+                height={300}
+                width={320}
+                style={{ border: "3px solid #984bf7", borderRadius: "10px" }}
+              />
             )}
             {qrNumber === 1 && (
               <div>
-              <QRCode value={qrData} className="qr" level="L"/>
+                <QRCode value={qrData} className="qr" level="L" />
               </div>
             )}
             {qrNumber === 2 && (
               <div>
-              <QRCode value={qrData} className="qr" level="M"/>
+                <QRCode value={qrData} className="qr" level="M" />
               </div>
             )}
             {qrNumber === 3 && (
               <div>
-              <QRCode value={qrData} className="qr" level="H"/>
+                <QRCode value={qrData} className="qr" level="H" />
               </div>
             )}
             {qrNumber === 4 && (
-              <img src={qr_bhim} alt="qr" height={300} width={300} style={{ border: "3px solid #984bf7", borderRadius: "10px", padding: "10px" }}/>
+              <img
+                src={qr_bhim}
+                alt="qr"
+                height={300}
+                width={300}
+                style={{
+                  border: "3px solid #984bf7",
+                  borderRadius: "10px",
+                  padding: "10px",
+                }}
+              />
             )}
             <p className="white font-20px center">
               Pay&nbsp;
@@ -632,7 +695,9 @@ function FriendAccount({ friend, refresh }) {
         onClose={() => setActionModalOpen(false)}
         onConfirm={handleActionConfirm}
         transactions={transactionsToAction}
-        title={`Select Transactions to ${actionType === "mail" ? "Email" : "Print"}`}
+        title={`Select Transactions to ${
+          actionType === "mail" ? "Email" : "Print"
+        }`}
         actionLabel={actionType === "mail" ? "Send Mail" : "Print"}
       />
     </div>
