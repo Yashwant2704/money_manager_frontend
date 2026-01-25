@@ -268,6 +268,22 @@ function FriendAccount({ friend, refresh }) {
       "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" +
       encodeURIComponent(qrData);
 
+    const qrSection = friend.balance > 0 ?`<div style="margin-top: 30px; text-align: center;">
+    <p style="margin-bottom: 10px; color: #BB86FC; font-size: 15px;">
+      Scan to settle via UPI
+    </p>
+    <img
+      src="${qrImageUrl}"
+      alt="UPI QR"
+      width="180"
+      height="180"
+      style="border: 2px solid #984bf7; border-radius: 10px; background: #fff; padding: 10px;"
+    />
+    <p style="margin-top: 8px; font-size: 12px; color: #aaa;">
+      Google Pay · PhonePe · Paytm · BHIM
+    </p>
+  </div>`:"";
+
     const html = `
     <html>
     <head>
@@ -373,22 +389,7 @@ function FriendAccount({ friend, refresh }) {
             .join("")}
         </tbody>
       </table>
-      <div style="margin-top: 30px; text-align: center;">
-  <p style="margin-bottom: 10px; color: #BB86FC; font-size: 15px;">
-    Scan to settle via UPI
-  </p>
-  <img
-    src="${qrImageUrl}"
-    alt="UPI QR"
-    width="180"
-    height="180"
-    style="border: 2px solid #984bf7; border-radius: 10px; background: #fff; padding: 10px;"
-  />
-  <p style="margin-top: 8px; font-size: 12px; color: #aaa;">
-    Google Pay · PhonePe · Paytm · BHIM
-  </p>
-</div>
-
+      ${qrSection}
       <div class="footer">
         <p>Y-MoneyManager</p>
       </div>

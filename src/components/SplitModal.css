@@ -389,3 +389,32 @@
 .split-friends-list::-webkit-scrollbar-thumb:hover {
   background: #984bf7;
 }
+
+
+.split-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+}
+
+.split-tabs button {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 2px solid #bb86fc;
+  background: transparent;
+  color: #fff;
+  font-weight: 600;
+}
+
+.split-tabs button.active {
+  background: linear-gradient(135deg, #bb86fc, #984bf7);
+}
+
+.qr-preview {
+  margin-top: 20px;
+  text-align: center;
+}
+.qr{
+  /* padding: 10px; */
+  border: 2px solid #984bf7;
+}
