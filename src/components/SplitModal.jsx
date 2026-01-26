@@ -5,42 +5,42 @@ import "./SplitModal.css";
 
 const SplitModal = ({ isOpen, onClose, onSubmit, friends }) => {
   // ===== EXISTING STATE (UNCHANGED) =====
-  const [totalAmount, setTotalAmount] = useState('');
-  const [note, setNote] = useState('');
+  const [totalAmount, setTotalAmount] = useState("");
+  const [note, setNote] = useState("");
   const [selectedFriends, setSelectedFriends] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // ===== NEW STATE (QR TAB ONLY) =====
   const [activeTab, setActiveTab] = useState("split"); // split | qr
-  const [qrAmount, setQrAmount] = useState('');
-  const [qrPeople, setQrPeople] = useState('');
+  const [qrAmount, setQrAmount] = useState("");
+  const [qrPeople, setQrPeople] = useState("");
   const [generatedQr, setGeneratedQr] = useState(null);
 
   useEffect(() => {
     if (isOpen) {
-      setTotalAmount('');
-      setNote('');
+      setTotalAmount("");
+      setNote("");
       setSelectedFriends([]);
       setActiveTab("split");
-      setQrAmount('');
-      setQrPeople('');
+      setQrAmount("");
+      setQrPeople("");
       setGeneratedQr(null);
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
 
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [isOpen]);
 
   // ===== EXISTING LOGIC (UNCHANGED) =====
   const handleFriendToggle = (friend) => {
-    setSelectedFriends(prev => {
-      const isSelected = prev.some(f => f.friendId === friend._id);
+    setSelectedFriends((prev) => {
+      const isSelected = prev.some((f) => f.friendId === friend._id);
       if (isSelected) {
-        return prev.filter(f => f.friendId !== friend._id);
+        return prev.filter((f) => f.friendId !== friend._id);
       } else {
         return [...prev, { friendId: friend._id, name: friend.name }];
       }
@@ -57,12 +57,12 @@ const SplitModal = ({ isOpen, onClose, onSubmit, friends }) => {
     e.preventDefault();
 
     if (!totalAmount || parseFloat(totalAmount) <= 0) {
-      toast.error('Please enter a valid amount');
+      toast.error("Please enter a valid amount");
       return;
     }
 
     if (selectedFriends.length === 0) {
-      toast.error('Please select at least one friend to split with');
+      toast.error("Please select at least one friend to split with");
       return;
     }
 
@@ -71,11 +71,11 @@ const SplitModal = ({ isOpen, onClose, onSubmit, friends }) => {
     try {
       await onSubmit({
         totalAmount: parseFloat(totalAmount),
-        note: note || 'Split expense',
-        selectedFriends
+        note: note || "Split expense",
+        selectedFriends,
       });
     } catch (err) {
-      console.error('Split transaction error:', err);
+      console.error("Split transaction error:", err);
     } finally {
       setLoading(false);
     }
@@ -97,7 +97,12 @@ const SplitModal = ({ isOpen, onClose, onSubmit, friends }) => {
       `&cu=INR` +
       `&tn=Split%20Payment`;
 
-    setGeneratedQr(upiUrl);
+    const qrImageUrl =
+      "https://api.qrserver.com/v1/create-qr-code/?" +
+      "size=220x220&data=" +
+      encodeURIComponent(upiUrl);
+
+    setGeneratedQr(qrImageUrl);
   };
 
   const splitAmount = calculateSplit();
@@ -111,7 +116,9 @@ const SplitModal = ({ isOpen, onClose, onSubmit, friends }) => {
         {/* Header (UNCHANGED) */}
         <div className="split-modal-header">
           <h2>Split Expense</h2>
-          <button className="split-close-btn" onClick={onClose}>×</button>
+          <button className="split-close-btn" onClick={onClose}>
+            ×
+          </button>
         </div>
 
         {/* ===== NEW TAB BAR ===== */}
@@ -168,16 +175,21 @@ const SplitModal = ({ isOpen, onClose, onSubmit, friends }) => {
               <h3>Select Friends to Split With</h3>
               {friends.length === 0 ? (
                 <div className="split-no-friends">
-                  No friends available. Please add friends first to split expenses.
+                  No friends available. Please add friends first to split
+                  expenses.
                 </div>
               ) : (
                 <div className="split-friends-list">
                   {friends.map((friend) => {
-                    const isSelected = selectedFriends.some(f => f.friendId === friend._id);
+                    const isSelected = selectedFriends.some(
+                      (f) => f.friendId === friend._id
+                    );
                     return (
                       <div
                         key={friend._id}
-                        className={`split-friend-item ${isSelected ? 'selected' : ''}`}
+                        className={`split-friend-item ${
+                          isSelected ? "selected" : ""
+                        }`}
                         onClick={() => handleFriendToggle(friend)}
                       >
                         <input
@@ -220,15 +232,22 @@ const SplitModal = ({ isOpen, onClose, onSubmit, friends }) => {
             )}
 
             <div className="split-modal-actions">
-              <button type="button" onClick={onClose} className="split-cancel-btn" disabled={loading}>
+              <button
+                type="button"
+                onClick={onClose}
+                className="split-cancel-btn"
+                disabled={loading}
+              >
                 Cancel
               </button>
               <button
                 type="submit"
                 className="split-submit-btn"
-                disabled={loading || !totalAmount || selectedFriends.length === 0}
+                disabled={
+                  loading || !totalAmount || selectedFriends.length === 0
+                }
               >
-                {loading ? 'Creating Split...' : `Split ₹${splitAmount} Each`}
+                {loading ? "Creating Split..." : `Split ₹${splitAmount} Each`}
               </button>
             </div>
           </form>
@@ -263,8 +282,19 @@ const SplitModal = ({ isOpen, onClose, onSubmit, friends }) => {
 
             {generatedQr && (
               <div className="qr-preview">
-                <QRCode value={generatedQr} size={200} className="qr"/>
-                <h3><span className="light-purple bold">₹{(qrAmount / qrPeople).toFixed(2)}</span> per person</h3>
+                <img
+                  src={generatedQr}
+                  alt="UPI QR Code"
+                  width={220}
+                  height={220}
+                  style={{
+                    background: "#fff",
+                    padding: "10px",
+                    borderRadius: "10px",
+                    border: "2px solid #bb86fc",
+                  }}
+                />
+                <p><h3 className="bold light-purple">₹{(qrAmount / qrPeople).toFixed(2)}</h3> per person</p>
               </div>
             )}
           </div>
