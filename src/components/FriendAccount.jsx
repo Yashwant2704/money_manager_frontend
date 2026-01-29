@@ -33,6 +33,15 @@ function FriendAccount({ friend, refresh }) {
     document.title = `${friend.name}'s Account - Y-MoneyManager`;
   }, [friend.name]);
 
+
+    qrData = `${QrUrl}&am=${friend.balance}&tn=${encodeURIComponent(
+      friend.name + " Settle"
+    )}`;
+
+    const qrImageUrl =
+      "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" +
+      encodeURIComponent(qrData);
+
   const handlePayViaWhatsApp = async () => {
     console.log("[FRONTEND] Pay via WhatsApp clicked");
   
@@ -259,14 +268,6 @@ function FriendAccount({ friend, refresh }) {
       );
       return;
     }
-    const QrUrl = "upi://pay?pa=7350998157@upi&pn=Yashwant%20Nagarkar";
-    const qrData = `${QrUrl}&am=${friend.balance}&tn=${encodeURIComponent(
-      friend.name + " Settle"
-    )}`;
-
-    const qrImageUrl =
-      "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" +
-      encodeURIComponent(qrData);
 
     const qrSection = friend.balance > 0 ?`<div style="margin-top: 30px; text-align: center;">
     <p style="margin-bottom: 10px; color: #BB86FC; font-size: 15px;">
@@ -678,8 +679,8 @@ function FriendAccount({ friend, refresh }) {
               />
             )}
             {qrNumber === 1 && (
-              <div>
-                <QRCode value={qrData} className="qr" level="L" />
+              <div className="qr-image">
+                <img src={qrImageUrl} alt="" height="200px" width="200px" />
               </div>
             )}
             {qrNumber === 2 && (
