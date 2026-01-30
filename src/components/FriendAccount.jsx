@@ -54,14 +54,14 @@ function FriendAccount({ friend, refresh }) {
     const amount = Number(friend.balance).toFixed(2);
     console.log("[FRONTEND] Amount:", amount);
   
-    const { ts, sig } = await signAmount(friend.balance);
+    const { ts, sig } = await signAmount(amount);
   
     console.log("[FRONTEND] Timestamp:", ts);
     console.log("[FRONTEND] Signature:", sig);
   
     const payLink =
       `${import.meta.env.VITE_API_BASE}/pay` +
-      `?amount=${friend.balance}` +
+      `?amount=${amount}` +
       `&ts=${ts}` +
       `&sig=${sig}`;
   
