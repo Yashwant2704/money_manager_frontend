@@ -26,7 +26,7 @@ function FriendAccount({ friend, refresh }) {
   const navigate = useNavigate();
   const QrUrl = "upi://pay?pa=7350998157@upi&pn=Yashwant%20Nagarkar";
   var qrData =
-    QrUrl + "&am=" + friend.balance + "&tn=" + friend.name + " Settle";
+    QrUrl + "&am=" + (friend.balance).toFixed(2); + "&tn=" + friend.name + " Settle";
   const printRef = useRef(null);
 
   useEffect(() => {
@@ -659,7 +659,7 @@ function FriendAccount({ friend, refresh }) {
           className="btn settle-btn"
           onClick={() => {
             window.location.href = `upi://pay?pa=7350998157@upi&pn=Yashwant&am=${Number(
-              friend.balance
+              amount
             ).toFixed(2)}&cu=INR&tn=Payment`;
           }}
         >

@@ -1,0 +1,225 @@
+/* src/components/RupeeCoinLoader.module.css */
+
+/* @import '../styles/variables.css'; */ /* Ensure your global variables are loaded */
+
+.loaderContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background-color);
+    overflow: hidden;
+    z-index: 9999;
+    perspective: 1200px; /* Stronger perspective for a 3D feel */
+  }
+  
+  /* Background grid (from previous version) */
+  .backgroundGrid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      linear-gradient(to right, var(--primary-color) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--primary-color) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.1;
+    animation: gridPulse 4s infinite alternate ease-in-out;
+  }
+  
+  @keyframes gridPulse {
+    0% { transform: scale(1); opacity: 0.1; }
+    50% { transform: scale(1.05); opacity: 0.15; }
+    100% { transform: scale(1); opacity: 0.1; }
+  }
+  
+  .loaderWrapper {
+    position: relative;
+    width: 150px; /* Adjust size of the overall animated area */
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    transform-style: preserve-3d;
+    /* Initial tilt for a more dramatic view */
+    transform: rotateX(60deg) rotateZ(-15deg); 
+  }
+  
+  .coinStack {
+    position: relative;
+    width: 80px; /* Base width for the coin image */
+    height: 80px; /* Base height for the coin image */
+    transform-style: preserve-3d;
+    animation: stackFloat 6s infinite ease-in-out; /* Slower, more deliberate float */
+  }
+  
+  /* Base style for each coin item */
+  .coinItem {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    transform-style: preserve-3d;
+    /* Initial off-screen positions for coins before they assemble */
+    transform: 
+      translateX(calc(var(--i) * 30px - 60px)) /* Spread out horizontally */
+      translateY(calc(var(--i) * -20px + 40px)) /* Spread out vertically */
+      translateZ(calc(var(--i) * -10px + 20px)) /* Spread out in depth */
+      rotateY(calc(var(--i) * 30deg - 60deg)) /* Initial random-ish rotation */
+      rotateX(70deg); /* Maintain 3D tilt */
+    
+    animation: coinAssemblyAndDisperse 6s infinite ease-in-out forwards;
+    animation-delay: calc(var(--i) * 0.1s); /* Staggered start */
+    z-index: calc(5 - var(--i)); /* Ensure proper layering during animation */
+  }
+  
+  /* Rupee Coin Image */
+  .coinFront {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%; /* Image is already round, but good for safety */
+    object-fit: contain; /* Ensure image fits */
+    /* This transform ensures the image appears on the "front" face of our 3D coin */
+    transform: translateZ(5px); /* Push image slightly forward to sit on edge */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); /* Enhanced shadow for realism */
+  }
+  
+  /* Coin Edge (matching the color/feel of the image) */
+  .coinEdge {
+    position: absolute;
+    width: 100%;
+    height: 100%; /* Same as coin width/height */
+    border-radius: 50%;
+    background: linear-gradient(to right, #b48e3a, #ffe580, #b48e3a); /* Gold-like gradient for the edge */
+    /* This creates the 'thickness' of the coin behind the image */
+    transform: translateZ(-5px); /* Position behind the front face */
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5); /* Inner shadow for edge depth */
+  }
+  
+  
+  /* Shadow beneath the stack */
+  .shadow {
+    position: absolute;
+    bottom: 0px;
+    width: 100px; /* Larger shadow */
+    height: 15px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    filter: blur(8px);
+    animation: shadowAnimate 6s infinite ease-in-out;
+    transform: scaleY(0.7) rotateX(70deg); /* Tilt with the perspective */
+  }
+  
+  .loadingText {
+    color: var(--text-color);
+    font-size: 1.6em;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-top: 30px;
+    text-shadow: 0 0 8px rgba(0,0,0,0.4);
+  }
+  
+  .subText {
+    color: var(--secondary-color);
+    font-size: 0.95em;
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+  }
+  
+  
+  /* Keyframe Animations */
+  
+  /* Overall stack floating */
+  @keyframes stackFloat {
+    0%, 100% { transform: translateY(0px) rotateX(60deg) rotateZ(-15deg); }
+    50% { transform: translateY(-15px) rotateX(65deg) rotateZ(-10deg); }
+  }
+  
+  /* Individual coin assembly and disperse animation */
+  @keyframes coinAssemblyAndDisperse {
+    /* Initial scattered state (matches transform in .coinItem) */
+    0% {
+      transform: 
+        translateX(calc(var(--i) * 30px - 60px)) 
+        translateY(calc(var(--i) * -20px + 40px)) 
+        translateZ(calc(var(--i) * -10px + 20px)) 
+        rotateY(calc(var(--i) * 30deg - 60deg)) 
+        rotateX(70deg);
+    }
+  
+    /* Phase 1: Assemble into a messy stack */
+    20% {
+      transform: 
+        translateX(0px) 
+        translateY(calc(var(--i) * -5px)) /* Stack vertically */
+        translateZ(calc(var(--i) * -1px)) /* Minor depth offset */
+        rotateY(0deg) 
+        rotateX(70deg);
+    }
+  
+    /* Phase 2: Refine into a tight stack */
+    40% {
+      transform: 
+        translateX(0px) 
+        translateY(calc(var(--i) * -3px)) /* Tighter vertical stack */
+        translateZ(0px) /* Align depth */
+        rotateY(0deg) 
+        rotateX(70deg); /* Maintain tilt */
+    }
+  
+    /* Phase 3: Hold the stack, maybe a little wobble */
+    50% {
+      transform: 
+        translateX(0px) 
+        translateY(calc(var(--i) * -3px)) 
+        translateZ(0px) 
+        rotateY(0deg) 
+        rotateX(70deg);
+    }
+  
+    /* Phase 4: Begin Dispersing - each coin flies out differently */
+    60% {
+      transform: 
+        translateX(calc(var(--i) * -10px + 20px)) /* Out left */
+        translateY(calc(var(--i) * -10px - 30px)) /* Upwards */
+        translateZ(calc(var(--i) * 5px + 10px)) /* Forward */
+        rotateY(calc(var(--i) * -40deg)) 
+        rotateX(calc(70deg + var(--i) * 5deg)); /* Add some individual spin */
+    }
+  
+    /* Phase 5: Further Disperse - wider spread */
+    80% {
+      transform: 
+        translateX(calc(var(--i) * 20px - 80px)) /* Further out right/left */
+        translateY(calc(var(--i) * -5px - 60px)) /* Higher */
+        translateZ(calc(var(--i) * 10px + 30px)) /* Much further forward */
+        rotateY(calc(var(--i) * 60deg)) 
+        rotateX(calc(70deg - var(--i) * 10deg)); /* More individual spin */
+      opacity: 1;
+    }
+  
+    /* Return to initial scattered state for loop */
+    100% {
+      transform: 
+        translateX(calc(var(--i) * 30px - 60px)) 
+        translateY(calc(var(--i) * -20px + 40px)) 
+        translateZ(calc(var(--i) * -10px + 20px)) 
+        rotateY(calc(var(--i) * 30deg - 60deg)) 
+        rotateX(70deg);
+      opacity: 1; /* Ensure visible for next loop */
+    }
+  }
+  
+  
+  /* Shadow animation */
+  @keyframes shadowAnimate {
+    0%, 100% { transform: scale(0.7) rotateX(70deg); opacity: 0.6; }
+    50% { transform: scale(0.9) rotateX(70deg); opacity: 0.8; }
+  }

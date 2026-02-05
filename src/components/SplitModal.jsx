@@ -13,6 +13,7 @@ const SplitModal = ({ isOpen, onClose, onSubmit, friends }) => {
   // ===== NEW STATE (QR TAB ONLY) =====
   const [activeTab, setActiveTab] = useState("split"); // split | qr
   const [qrAmount, setQrAmount] = useState("");
+  const [qrNote, setQrNote] = useState(""); // NEW: Note for QR
   const [qrPeople, setQrPeople] = useState("");
   const [generatedQr, setGeneratedQr] = useState(null);
 
@@ -23,6 +24,7 @@ const SplitModal = ({ isOpen, onClose, onSubmit, friends }) => {
       setSelectedFriends([]);
       setActiveTab("split");
       setQrAmount("");
+      setQrNote("");
       setQrPeople("");
       setGeneratedQr(null);
       document.body.style.overflow = "hidden";
@@ -81,21 +83,22 @@ const SplitModal = ({ isOpen, onClose, onSubmit, friends }) => {
     }
   };
 
-  // ===== NEW: QR GENERATION =====
+  // ===== NEW: QR GENERATION (UPDATED WITH NOTE) =====
   const handleGenerateQr = () => {
-    if (!qrAmount || !qrPeople || qrPeople <= 0) {
+    if (!qrAmount || !qrPeople || parseInt(qrPeople) <= 0) {
       toast.error("Enter valid amount and number of people");
       return;
     }
 
     const perPerson = (parseFloat(qrAmount) / parseInt(qrPeople)).toFixed(2);
+    const tnNote = qrNote ? encodeURIComponent(qrNote) : "Split Payment";
 
     const upiUrl =
       `upi://pay?pa=7350998157@upi` +
       `&pn=Yashwant%20Nagarkar` +
       `&am=${perPerson}` +
       `&cu=INR` +
-      `&tn=Split%20Payment`;
+      `&tn=${tnNote}`;
 
     const qrImageUrl =
       "https://api.qrserver.com/v1/create-qr-code/?" +
@@ -253,25 +256,47 @@ const SplitModal = ({ isOpen, onClose, onSubmit, friends }) => {
           </form>
         )}
 
-        {/* ===== NEW QR TAB (ISOLATED) ===== */}
+        {/* ===== UPDATED QR TAB WITH RUPEE, PLACEHOLDERS & NOTE ===== */}
         {activeTab === "qr" && (
           <div className="split-form">
             <div className="split-input-group">
-              <label>Total Amount</label>
+              <label htmlFor="qrAmount">Total Amount</label>
+              <div className="split-amount-wrapper">
+                <span className="split-currency">₹</span>
+                <input
+                  id="qrAmount"
+                  type="number"
+                  value={qrAmount}
+                  onChange={(e) => setQrAmount(e.target.value)}
+                  placeholder="0.00"
+                  step="0.01"
+                  min="0"
+                  className="split-input"
+                />
+              </div>
+            </div>
+
+            <div className="split-input-group">
+              <label htmlFor="qrNote">Note (optional)</label>
               <input
-                type="number"
-                value={qrAmount}
-                onChange={(e) => setQrAmount(e.target.value)}
+                id="qrNote"
+                type="text"
+                value={qrNote}
+                onChange={(e) => setQrNote(e.target.value)}
+                placeholder="What was this expense for?"
                 className="split-input"
               />
             </div>
 
             <div className="split-input-group">
-              <label>Number of People</label>
+              <label htmlFor="qrPeople">Number of People</label>
               <input
+                id="qrPeople"
                 type="number"
                 value={qrPeople}
                 onChange={(e) => setQrPeople(e.target.value)}
+                placeholder="2"
+                min="1"
                 className="split-input"
               />
             </div>
@@ -294,7 +319,9 @@ const SplitModal = ({ isOpen, onClose, onSubmit, friends }) => {
                     border: "2px solid #bb86fc",
                   }}
                 />
-                <p><h3 className="bold light-purple">₹{(qrAmount / qrPeople).toFixed(2)}</h3> per person</p>
+                <p className="light-purple">
+                  <strong>₹{(qrAmount / qrPeople).toFixed(2)} per person</strong>
+                </p>
               </div>
             )}
           </div>

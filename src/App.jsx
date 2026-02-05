@@ -10,6 +10,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import Footer from './components/Footer';
 import Banner from './components/Banner';
 import { Toaster } from 'react-hot-toast';
+import CoinLoader from "./components/CoinLoader";
 
 import './App.css';
 import AdminApp from './pages/AdminApp';
@@ -28,6 +29,7 @@ function App() {
   }, [userLoggedIn, navigate]);
 
   const [bannerVisible, setBannerVisible] = useState(true);
+  const [isLoading, setLoading] = useState(true);
 
   const latestChangesMessage = "⚠️ Latest fix (26/09/25): Fixed delete transaction function";
   const [dismissAnimating, setDismissAnimating] = useState(false);
@@ -39,6 +41,10 @@ function App() {
       setDismissAnimating(false);
     }, 400); // Duration matches slideUpFade animation
   };
+
+  // if (isLoading) {
+  //   return <CoinLoader />; // Use your new loader here
+  // }
   return (
     <div className="app dark-theme">
       <ImpersonationBanner />
