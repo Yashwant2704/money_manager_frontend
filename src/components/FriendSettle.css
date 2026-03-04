@@ -1,0 +1,145 @@
+.settle-page {
+  text-align: center;
+}
+
+.settle-page h2 {
+  color: #BB86FC;
+  margin-bottom: 20px;
+}
+
+.settle-amount {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #ffffff;
+}
+
+.settle-page button {
+  display: block;
+  width: 250px;
+  margin: 12px auto;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+.settle-page button:first-of-type {
+  background: linear-gradient(135deg,#BB86FC,#984bf7);
+  color: #1F1B24;
+  border: none;
+}
+
+.settle-page button:first-of-type:hover {
+  box-shadow: 0 5px 15px rgba(187,134,252,0.4);
+  transform: translateY(-2px);
+}
+
+
+.settle-page {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.settle-page h2 {
+  color: #BB86FC;
+  margin-bottom: 20px;
+}
+
+.settle-amount {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: #ffffff;
+}
+
+/* .settle-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+} */
+
+.settle-primary {
+  background: linear-gradient(135deg, #BB86FC, #984bf7);
+  color: #1f1b24;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.settle-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(187,134,252,0.4);
+}
+
+.settle-secondary {
+  background: transparent;
+  border: 1px solid #BB86FC;
+  color: #BB86FC;
+  padding: 12px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.settle-secondary:hover {
+  background: rgba(187,134,252,0.1);
+}
+
+/* QR Section */
+
+.qr-section {
+  margin-top: 25px;
+  padding: 20px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #1f1b24, #17141d);
+  border: 2px solid #BB86FC;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  display: inline-block;
+  animation: fadeIn 0.25s ease;
+}
+
+.qr-title {
+  color: #BB86FC;
+  margin-bottom: 15px;
+}
+
+.qr-image {
+  width: 200px;
+  height: 200px;
+  border: 2px solid #BB86FC;
+  border-radius: 14px;
+  background: #ffffff;
+  padding: 10px;
+}
+
+.qr-hint {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+  .settle-buttons {
+    flex-direction: column;
+  }
+
+  .settle-primary,
+  .settle-secondary {
+    width: 100%;
+  }
+
+  .qr-image {
+    width: 170px;
+    height: 170px;
+  }
+}

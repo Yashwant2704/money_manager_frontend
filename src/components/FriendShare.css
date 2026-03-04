@@ -1,0 +1,19 @@
+.share-page {
+  text-align: center;
+}
+
+.share-page h2 {
+  color: #BB86FC;
+  margin-bottom: 25px;
+}
+
+.share-page button {
+  width: 250px;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+.share-page button:hover {
+  box-shadow: 0 4px 15px rgba(187,134,252,0.3);
+}

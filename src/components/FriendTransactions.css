@@ -1,0 +1,14 @@
+.transactions-page h2 {
+  margin-top: 0;
+  color: #BB86FC;
+  margin-bottom: 20px;
+}
+
+.transactions-table tr {
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.transactions-table tr:hover {
+  background: rgba(187, 134, 252, 0.08);
+}

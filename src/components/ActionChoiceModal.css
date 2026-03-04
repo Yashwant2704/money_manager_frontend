@@ -1,115 +1,250 @@
-.action-choice-modal-overlay {
-    position: fixed;
-    z-index: 9999;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(25, 24, 30, 0.7);
-    padding: 10px;
+/* ========================= */
+/* OVERLAY */
+/* ========================= */
+
+.ac-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 999;
+}
+
+/* ========================= */
+/* MODAL */
+/* ========================= */
+
+.ac-modal {
+  width: 100%;
+  max-width: 520px;
+  background: linear-gradient(145deg, #1f1b24, #17141d);
+  border: 2px solid #BB86FC;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.7);
+  animation: fadeIn 0.25s ease;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Title */
+
+.ac-title {
+  text-align: center;
+  color: #BB86FC;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+}
+
+/* ========================= */
+/* OPTIONS */
+/* ========================= */
+
+.ac-options {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.ac-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #121212;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid #2c2c3a;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.ac-option:hover {
+  border-color: #BB86FC;
+  background: rgba(187,134,252,0.08);
+}
+
+.ac-option.active {
+  border-color: #BB86FC;
+}
+
+/* Hide native radio */
+.ac-option input[type="radio"] {
+  display: none;
+}
+
+.ac-radio {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #BB86FC;
+  border-radius: 50%;
+  position: relative;
+}
+
+.ac-option input[type="radio"]:checked + .ac-radio::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  background: #BB86FC;
+  border-radius: 50%;
+}
+
+.ac-text {
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+/* ========================= */
+/* SELECTIVE LIST */
+/* ========================= */
+
+.ac-txn-list {
+  margin-top: 10px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ac-txn-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  background: #121212;
+  border-radius: 10px;
+  border: 1px solid #2c2c3a;
+  cursor: pointer;
+}
+
+.ac-txn-row:hover {
+  border-color: #BB86FC;
+}
+
+/* Hide native checkbox */
+.ac-txn-row input[type="checkbox"] {
+  display: none;
+}
+
+.ac-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #BB86FC;
+  border-radius: 4px;
+  position: relative;
+}
+
+.ac-txn-row input[type="checkbox"]:checked + .ac-checkbox::after {
+  content: "✓";
+  position: absolute;
+  font-size: 12px;
+  color: #BB86FC;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ac-txn-text {
+  color: #ffffff;
+  font-size: 0.85rem;
+  word-break: break-word;
+}
+
+.ac-empty {
+  text-align: center;
+  color: #888;
+  padding: 10px;
+}
+
+/* ========================= */
+/* ACTION BUTTONS */
+/* ========================= */
+
+.ac-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.ac-actions button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+  border: none;
+}
+
+.ac-cancel {
+  background: transparent;
+  border: 1px solid #BB86FC;
+  color: #BB86FC;
+}
+
+.ac-cancel:hover {
+  background: rgba(187,134,252,0.1);
+}
+
+.ac-confirm {
+  background: linear-gradient(135deg, #BB86FC, #984bf7);
+  color: #1f1b24;
+}
+
+.ac-confirm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(187,134,252,0.4);
+}
+
+.ac-confirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ========================= */
+/* SCROLLBAR */
+/* ========================= */
+
+.ac-txn-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ac-txn-list::-webkit-scrollbar-thumb {
+  background: #BB86FC;
+  border-radius: 10px;
+}
+
+/* ========================= */
+/* MOBILE */
+/* ========================= */
+
+@media (max-width: 600px) {
+  .ac-modal {
+    padding: 22px;
   }
-  
-  .action-choice-modal {
-    background: #191824;
-    color: #fff;
-    border-radius: 10px;
-    max-width: 380px;
-    min-width: 320px;
+
+  .ac-actions {
+    flex-direction: column;
+  }
+
+  .ac-actions button {
     width: 100%;
-    box-shadow: 0 6px 32px #000c;
-    padding: 18px 20px 16px 20px;
-    animation: fadeIn 0.25s;
   }
-  
-  .action-choice-modal h2 {
-    margin-top: 0;
-    font-size: 1.3rem;
-    margin-bottom: 15px;
-    color: #bb86fc;
-  }
-  
-  .choice-section {
-    display: flex;
-    gap: 18px;
-    margin-bottom: 15px;
-  }
-  .choice-section label {
-    font-weight: 500;
-    font-size: 1rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  
-  .txn-select-list {
-    max-height: 130px;
-    overflow-y: auto;
-    margin-bottom: 10px;
-    background: #231b36;
-    border: 1px solid #bb86fc;
-    border-radius: 6px;
-    padding: 5px;
-  }
-  
-  .txn-row {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    margin: 0 0 6px 0;
-    font-size: 0.92rem;
-    cursor: pointer;
-  }
-  
-  .txn-row input[type="checkbox"] {
-    accent-color: #bb86fc;
-  }
-  
-  .txn-empty {
-    padding: 12px 0;
-    text-align: center;
-    color: #aaa;
-  }
-  
-  .action-choice-modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  .choice-cancel-btn, .choice-confirm-btn {
-    padding: 8px 20px;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-  
-  .choice-cancel-btn {
-    background: #2d2941;
-    color: #bb86fc;
-    border: 1px solid #bb86fc;
-  }
-  
-  .choice-cancel-btn:hover {
-    background: #201e2e;
-  }
-  
-  .choice-confirm-btn {
-    background: linear-gradient(90deg, #bb86fc, #7e60ff);
-    color: #201e2e;
-    border: none;
-  }
-  
-  .choice-confirm-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  @keyframes fadeIn {
-    from { transform: translateY(60px) scale(0.98); opacity: 0.3; }
-    to { transform: none; opacity: 1; }
-  }
-  
+}
+
+/* ========================= */
+/* ANIMATION */
+/* ========================= */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

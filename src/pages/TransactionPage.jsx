@@ -206,101 +206,118 @@ function TransactionPage() {
 
   return (
     <div className="TransactionPage">
-      {!isEditing ? (
-        <>
-          <div className="details">
-            <div>
-              Transaction Date:{" "}
-              <p className="light-purple">
-                {new Date(transaction.date).toLocaleDateString("en-GB")}
-              </p>
-              <p className="light-purple">
-                {new Date(transaction.date).toLocaleTimeString("en-US", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </p>
-            </div>
-            <div>
-              Transaction Amount: <p className="light-purple">₹{transaction.amount}</p>
-            </div>
-            <div>
-              Transaction Note: <p className="light-purple">{transaction.note}</p>
-            </div>
+
+  {!isEditing ? (
+    <>
+      <div className="transaction-card">
+
+        <div className="transaction-header">
+          <h2>Transaction Details</h2>
+          <span className={`amount-badge ${transaction.amount >= 0 ? "positive" : "negative"}`}>
+            ₹{transaction.amount}
+          </span>
+        </div>
+
+        <div className="transaction-grid">
+
+          <div className="info-block">
+            <span className="label">Date</span>
+            <span className="value">
+              {new Date(transaction.date).toLocaleDateString("en-GB")}
+            </span>
           </div>
-          <div className="center" style={{ marginTop: "1rem" }}>
-            <button className="back" onClick={goBack}>
-              <i className="icon fa-solid fa-arrow-right-from-bracket fa-rotate-180"></i>
-            </button>
-            <button onClick={() => setIsEditing(true)}>Edit</button>
-            <button onClick={deleteTransaction}>Delete</button>
+
+          <div className="info-block">
+            <span className="label">Time</span>
+            <span className="value">
+              {new Date(transaction.date).toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
           </div>
-        </>
-      ) : (
-        <form className="edit-form" onSubmit={handleEditSubmit}>
-          <div className="field">
-            <label htmlFor="date">Date:</label>
-            <input
-              className="formInput"
-              type="date"
-              id="date"
-              value={editDate}
-              onChange={(e) => setEditDate(e.target.value)}
-              required
-            />
+
+          <div className="info-block full-width">
+            <span className="label">Note</span>
+            <span className="value">
+              {transaction.note || "—"}
+            </span>
           </div>
-          <div className="field">
-            <label htmlFor="time">Time:</label>
-            <input
-              className="formInput"
-              type="time"
-              id="time"
-              value={editTime}
-              onChange={(e) => setEditTime(e.target.value)}
-              required
-            />
-          </div>
-          <div className="field">
-            <label htmlFor="amount">Amount:</label>
-            <input
-              className="formInput"
-              type="number"
-              id="amount"
-              value={editAmount}
-              onChange={(e) => setEditAmount(e.target.value)}
-              required
-            />
-          </div>
-          <div className="field">
-            <label htmlFor="note">Note:</label>
-            <input
-              className="formInput"
-              type="text"
-              id="note"
-              value={editNote}
-              onChange={(e) => setEditNote(e.target.value)}
-            />
-          </div>
-          <div style={{ marginTop: "1rem" }}>
-            <button type="submit">Save</button>
-            <button
-              type="button"
-              onClick={() => {
-                setIsEditing(false);
-                setEditAmount(transaction.amount);
-                setEditNote(transaction.note || "");
-                const txnDate = new Date(transaction.date);
-                setEditDate(txnDate.toISOString().substring(0, 10)); // yyyy-mm-dd
-                setEditTime(txnDate.toTimeString().substring(0, 5)); // HH:mm
-              }}
-              style={{ marginLeft: "1rem" }}
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      )}
+
+        </div>
+
+        <div className="transaction-actions">
+          <button className="btn-secondary" onClick={goBack}>Back</button>
+          <button className="btn-primary" onClick={() => setIsEditing(true)}>Edit</button>
+          <button className="btn-danger" onClick={deleteTransaction}>Delete</button>
+        </div>
+
+      </div>
+    </>
+  ) : (
+    <form className="edit-form premium-form" onSubmit={handleEditSubmit}>
+
+  <div className="edit-header">
+    <h2>Edit Transaction</h2>
+  </div>
+
+  <div className="form-grid">
+
+    <div className="field">
+      <label>Date</label>
+      <input
+        type="date"
+        value={editDate}
+        onChange={(e) => setEditDate(e.target.value)}
+        required
+      />
     </div>
+
+    <div className="field">
+      <label>Time</label>
+      <input
+        type="time"
+        value={editTime}
+        onChange={(e) => setEditTime(e.target.value)}
+        required
+      />
+    </div>
+
+    <div className="field full-width">
+      <label>Amount</label>
+      <input
+        type="number"
+        value={editAmount}
+        onChange={(e) => setEditAmount(e.target.value)}
+        required
+      />
+    </div>
+
+    <div className="field full-width">
+      <label>Note</label>
+      <input
+        type="text"
+        value={editNote}
+        onChange={(e) => setEditNote(e.target.value)}
+        placeholder="Optional note..."
+      />
+    </div>
+
+  </div>
+
+  <div className="edit-actions">
+    <button type="button" className="btn-secondary" onClick={() => setIsEditing(false)}>
+      Cancel
+    </button>
+    <button type="submit" className="btn-primary">
+      Save Changes
+    </button>
+  </div>
+
+</form>
+  )}
+
+</div>
   );
 }
 

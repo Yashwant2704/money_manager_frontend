@@ -9,7 +9,6 @@ import qr from "../assets/qr.jpeg";
 import qr_bhim from "../assets/qr_bhim.jpeg";
 import SettleModal from "./SettleModal";
 import ActionChoiceModal from "./ActionChoiceModal";
-import QRCode from "react-qr-code";
 import "./FriendAccount.css";
 
 function FriendAccount({ friend, refresh }) {

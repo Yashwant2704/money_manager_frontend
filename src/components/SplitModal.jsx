@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
-import QRCode from "react-qr-code";
 import "./SplitModal.css";
 
 const SplitModal = ({ isOpen, onClose, onSubmit, friends }) => {
