@@ -1,0 +1,106 @@
+.advanced-door-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Keeps text left, door right */
+    gap: 15px;
+    padding: 10px 20px;
+    background: #1f1b24;
+    color: #ffffff;
+    border: 2px solid #bb86fc;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    perspective: 1000px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .portal-container {
+    position: relative;
+    width: 40px;
+    height: 40px;
+  }
+  
+  /* --- THE DOOR (Right Hinge) --- */
+  .door-panel {
+    position: absolute;
+    width: 80%;
+    height: 100%;
+    background: #bb86fc;
+    border-radius: 4px;
+    z-index: 2;
+    transform-origin: right; /* Hinge is now on the right */
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    padding-left: 6px; /* Handle on the left side of the door */
+  }
+  
+  .door-handle {
+    width: 4px;
+    height: 10px;
+    border-radius: 2px;
+    background: #1f1b24;
+  }
+  
+  /* --- THE WALKER (Right to Left) --- */
+  .walker-sprite {
+    position: absolute;
+    right: 0; /* Start at the door position */
+    width: 40px;
+    height: 40px;
+    background-image: url("../assets/walker-sprite.svg"); 
+    background-size: 320px 40px;
+    opacity: 0;
+    z-index: 1;
+    /* Flip the SVG so the stickman faces left */
+    transform: scaleX(-1) scale(0.7); 
+    transition: opacity 0.3s ease;
+  }
+  
+  /* --- ANIMATION STATES --- */
+  
+  /* Hover: Swing door open */
+  .advanced-door-btn:hover:not(:disabled) .door-panel {
+    transform: rotateY(110deg); /* Positive degrees swings it "out" from the right */
+  }
+  
+  .advanced-door-btn:hover:not(:disabled) .walker-sprite {
+    opacity: 1;
+  }
+  
+  /* Click: Start the exit sequence */
+  .logging-out .walker-sprite {
+    animation: 
+      play-sprite 0.6s steps(8) infinite,
+      walk-left 1.2s forwards linear;
+  }
+  
+  .logging-out .door-panel {
+    transform: rotateY(110deg);
+  }
+  
+  /* --- KEYFRAMES --- */
+  
+  @keyframes play-sprite {
+    from { background-position: 0px; }
+    to { background-position: -320px; }
+  }
+  
+  @keyframes walk-left {
+    0% {
+      left: 0px;
+      opacity: 1;
+    }
+    100% {
+      left: 120px; /* Moves across the button to the left */
+      opacity: 0;
+      filter: blur(4px);
+    }
+  }
+  
+  .logging-out .btn-text {
+    opacity: 0.3;
+    filter: blur(1px);
+    transition: 0.4s;
+  }
