@@ -29,23 +29,23 @@ function Login() {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
-
+      console.log(JSON.stringify(data.user));
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      toast.success("Login successful",
-      {
-        style: {
-          border: '3px solid #bb86fc',
-          padding: '16px',
-          color: '#ffffff',
-          background: '#272727'
-        },
-        iconTheme: {
-          primary: '#ffffff',
-          secondary: '#272727',
-        },
-      });
+      // toast.success("Login successful",
+      // {
+      //   style: {
+      //     border: '3px solid #bb86fc',
+      //     padding: '16px',
+      //     color: '#ffffff',
+      //     background: '#272727'
+      //   },
+      //   iconTheme: {
+      //     primary: '#ffffff',
+      //     secondary: '#272727',
+      //   },
+      // });
       navigate("/");
     } catch (err) {
       toast.error(err.message,

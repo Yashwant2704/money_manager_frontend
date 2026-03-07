@@ -5,13 +5,30 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Triangle } from "react-loader-spinner";
 import "./FriendSettle.css";
+import { useEffect } from "react";
 
 function FriendSettle() {
+ 
   const { friend, refresh } = useOutletContext();
 
   const [settleModalOpen, setSettleModalOpen] = useState(false);
   const [showQr, setShowQr] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [upiId, setUpiId] = useState("");
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+  
+    if (storedUser) {
+      const parsed = JSON.parse(storedUser);
+  
+      // console.log("Parsed:", parsed.upiId);
+  
+      setUpiId(parsed.upiId);
+  
+      // console.log("UPI ID:", parsed.upiId);
+    }
+  }, []);
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem("token");
@@ -51,14 +68,15 @@ function FriendSettle() {
   /* QR LOGIC */
   /* ========================= */
 
-  const upiBase = "upi://pay?pa=7350998157@upi&pn=Yashwant%20Nagarkar";
+  const upiBase = `upi://pay?pa=${upiId}`;
 
   const qrData = useMemo(() => {
-    if (!friend.balance || friend.balance <= 0) return "";
-    return `${upiBase}&am=${friend.balance}&tn=${encodeURIComponent(
+    if (!friend.balance || friend.balance <= 0 || !upiId) return "";
+  
+    return `upi://pay?pa=${upiId}&am=${friend.balance}&tn=${encodeURIComponent(
       friend.name + " Settle"
     )}`;
-  }, [friend.balance, friend.name]);
+  }, [friend.balance, friend.name, upiId]);
 
   const qrImageUrl = useMemo(() => {
     if (!qrData) return "";
@@ -78,15 +96,11 @@ function FriendSettle() {
 
   return (
     <div className="settle-page">
-
       <h2>Settle Balance</h2>
 
-      <div className="settle-amount">
-        ₹{Number(friend.balance).toFixed(2)}
-      </div>
+      <div className="settle-amount">₹{Number(friend.balance).toFixed(2)}</div>
 
       <div className="settle-buttons">
-
         <button
           onClick={() => {
             if (!friend.balance || friend.balance === 0) {
@@ -100,13 +114,9 @@ function FriendSettle() {
           Choose Payment Method
         </button>
 
-        <button
-          onClick={handleToggleQr}
-          className="settle-secondary"
-        >
+        <button onClick={handleToggleQr} className="settle-secondary">
           {showQr ? "Hide QR" : "Show QR"}
         </button>
-
       </div>
 
       {loading && (
@@ -123,19 +133,11 @@ function FriendSettle() {
 
       {showQr && friend.balance > 0 && (
         <div className="qr-section">
-
           <p className="qr-title">Scan to settle via UPI</p>
 
-          <img
-            src={qrImageUrl}
-            alt="UPI QR"
-            className="qr-image"
-          />
+          <img src={qrImageUrl} alt="UPI QR" className="qr-image" />
 
-          <p className="qr-hint">
-            Google Pay • PhonePe • Paytm • BHIM
-          </p>
-
+          <p className="qr-hint">Google Pay • PhonePe • Paytm • BHIM</p>
         </div>
       )}
 
