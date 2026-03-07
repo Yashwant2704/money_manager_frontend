@@ -224,6 +224,7 @@ const SplitModal = ({ isOpen, onClose, onSubmit, friends, upiId }) => {
                       >
                         <input
                           type="checkbox"
+                          className="split-checkbox"
                           checked={selected}
                           onChange={() =>
                             handleFriendToggle(friend)
