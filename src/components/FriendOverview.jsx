@@ -2,25 +2,38 @@ import { useOutletContext } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import "./FriendOverview.css";
 
 function FriendOverview() {
   const { friend, refresh } = useOutletContext();
-  const [amount, setAmount] = useState("");
-  const [note, setNote] = useState("");
+
+  const [mode, setMode] = useState("single");
   const [loading, setLoading] = useState(false);
 
-  const handleTransaction = async (value) => {
-    if (!amount) return toast.error("Enter amount");
+  // single entry state
+  const [amount, setAmount] = useState("");
+  const [note, setNote] = useState("");
 
-    const token = localStorage.getItem("token");
+  // multi entry state
+  const [rows, setRows] = useState([{ amount: "", note: "" }]);
+
+  const token = localStorage.getItem("token");
+
+  const api = `${import.meta.env.VITE_API_BASE}/friends/transaction/${friend._id}`;
+
+  /* ---------------- SINGLE TRANSACTION ---------------- */
+
+  const handleSingle = async (value) => {
+    if (!amount) return toast.error("Enter amount");
 
     try {
       setLoading(true);
+
       await axios.post(
-        `${import.meta.env.VITE_API_BASE}/friends/transaction/${friend._id}`,
+        api,
         {
           amount: parseFloat(value),
-          note,
+          note
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -36,48 +49,203 @@ function FriendOverview() {
     }
   };
 
+  /* ---------------- MULTIPLE TRANSACTIONS ---------------- */
+
+  const handleMulti = async (type) => {
+    const transactions = rows
+      .filter((r) => r.amount)
+      .map((r) => ({
+        amount: type === "add" ? parseFloat(r.amount) : -parseFloat(r.amount),
+        note: r.note
+      }));
+
+    if (!transactions.length) {
+      return toast.error("Enter at least one amount");
+    }
+
+    try {
+      setLoading(true);
+
+      await axios.post(
+        api,
+        { transactions },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setRows([{ amount: "", note: "" }]);
+      refresh();
+    } catch (err) {
+      console.error(err);
+      toast.error("Transaction failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* ---------------- TABLE HELPERS ---------------- */
+
+  const addRow = () => {
+    setRows([...rows, { amount: "", note: "" }]);
+  };
+
+  const removeRow = (index) => {
+    const updated = rows.filter((_, i) => i !== index);
+    setRows(updated.length ? updated : [{ amount: "", note: "" }]);
+  };
+
+  const updateRow = (index, field, value) => {
+    const updated = [...rows];
+    updated[index][field] = value;
+    setRows(updated);
+  };
+
+  /* ---------------- UI ---------------- */
+
   return (
-    <div>
+    <div className="transaction-section noprint">
 
-      {/* Add/Subtract Form */}
-      <div className="transaction-section noprint">
-        <h4 className="mb-10px">Add/Subtract Money</h4>
+<div className="mode-toggle">
+  <span className={mode === "single" ? "active-label" : ""}>Single</span>
 
-        <input
-          type="number"
-          className="input-field"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          placeholder="Amount"
-        />
+  <label className="switch">
+    <input
+      type="checkbox"
+      checked={mode === "multi"}
+      onChange={() => setMode(mode === "single" ? "multi" : "single")}
+    />
+    <span className="slider"></span>
+  </label>
 
-        <input
-          type="text"
-          className="input-field"
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-          placeholder="Note"
-        />
+  <span className={mode === "multi" ? "active-label" : ""}>Multiple</span>
+</div>
 
-        <div className="transaction-buttons">
+      <h4 style={{ marginBottom: "10px" }}>Add / Subtract Money</h4>
+
+      {/* ---------- SINGLE ENTRY ---------- */}
+
+      {mode === "single" && (
+        <>
+          <input
+            type="number"
+            className="input-field"
+            placeholder="Amount"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+
+          <input
+            type="text"
+            className="input-field"
+            placeholder="Note"
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+          />
+
+          <div className="transaction-buttons">
+            <button
+              className="btn add-btn"
+              disabled={loading}
+              onClick={() => handleSingle(amount)}
+            >
+              I paid
+            </button>
+
+            <button
+              className="btn subtract-btn"
+              disabled={loading}
+              onClick={() => handleSingle(-amount)}
+            >
+              They paid
+            </button>
+          </div>
+        </>
+      )}
+
+      {/* ---------- MULTI ENTRY TABLE ---------- */}
+
+      {mode === "multi" && (
+        <>
+          <table style={{ width: "100%", marginBottom: "10px" }}>
+            <thead>
+              <tr>
+                <th style={{ width: "150px", textAlign: "left" }}>Amount</th>
+                <th style={{ textAlign: "left" }}>Note</th>
+                <th style={{ width: "50px" }}></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {rows.map((row, index) => (
+                <tr key={index}>
+                  <td>
+                    <input
+                      type="number"
+                      className="input-field"
+                      placeholder="Amount"
+                      value={row.amount}
+                      onChange={(e) =>
+                        updateRow(index, "amount", e.target.value)
+                      }
+                    />
+                  </td>
+
+                  <td>
+                    <input
+                      type="text"
+                      className="input-field"
+                      placeholder="Note"
+                      value={row.note}
+                      onChange={(e) =>
+                        updateRow(index, "note", e.target.value)
+                      }
+                    />
+                  </td>
+
+                  <td>
+                    <button
+                      onClick={() => removeRow(index)}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        fontSize: "16px"
+                      }}
+                    >
+                      ✕
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
           <button
-            className="btn add-btn"
-            onClick={() => handleTransaction(amount)}
-            disabled={loading}
+            className="btn"
+            style={{ marginBottom: "10px" }}
+            onClick={addRow}
           >
-            I paid
+            + Add Row
           </button>
 
-          <button
-            className="btn subtract-btn"
-            onClick={() => handleTransaction(-amount)}
-            disabled={loading}
-          >
-            They paid
-          </button>
-        </div>
-      </div>
+          <div className="transaction-buttons">
+            <button
+              className="btn add-btn"
+              disabled={loading}
+              onClick={() => handleMulti("add")}
+            >
+              I paid
+            </button>
 
+            <button
+              className="btn subtract-btn"
+              disabled={loading}
+              onClick={() => handleMulti("subtract")}
+            >
+              They paid
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 }

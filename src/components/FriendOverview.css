@@ -1,45 +1,89 @@
-.overview-card {
-  background: #272727;
-  padding: 30px;
-  border-radius: 12px;
-  text-align: center;
-  margin-bottom: 30px;
-  border: 2px solid #BB86FC;
-}
-
-.balance-big {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-top: 10px;
-}
-
-.balance-big.positive {
-  color: #4cd964;
-}
-
-.balance-big.negative {
-  color: #ff5c5c;
-}
-
-.transactions-table {
+.transaction-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
+  margin-bottom: 10px;
 }
 
-.transactions-table th {
-  background: linear-gradient(90deg,#BB86FC,#984bf7);
-  padding: 12px;
+.transaction-table th {
   text-align: left;
+  padding: 6px;
+  border-bottom: 1px solid #ddd;
+}
+
+.transaction-table td {
+  padding: 4px;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  color: red;
+}
+.mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.mode-toggle span {
+  color: #777;
+}
+
+.mode-toggle .active-label {
   font-weight: 600;
-  color: #1F1B24;
+  color: #333;
 }
 
-.transactions-table td {
-  padding: 12px;
-  border-bottom: 1px solid #333;
+/* Switch container */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 22px;
 }
 
-.transactions-table tr:hover {
-  background-color: #333;
+/* Hide checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider background */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #ccc;
+  border-radius: 30px;
+  transition: 0.3s;
+}
+
+/* Slider circle */
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+/* Checked state */
+.switch input:checked + .slider {
+  background-color: #bb86fc;
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(20px);
 }
