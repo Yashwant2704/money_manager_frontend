@@ -6,6 +6,7 @@ import axios from "axios";
 import { Toaster, toast } from 'react-hot-toast';
 
 function TransactionPage() {
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
   const [transaction, setTransaction] = useState(null);
@@ -78,42 +79,38 @@ function TransactionPage() {
   };
 
   const deleteTransaction = async () => {
-    if (window.confirm("Are you sure?")) {
-      try {
-        const headers = getAuthHeaders();
-        if (!headers) return;
-
-        await axios.delete(
-          `${import.meta.env.VITE_API_BASE}/friends/transaction/${id}`,
-          { headers }
-        );
-        toast.success('Deleted Transaction!', {
-          style: {
-            border: '3px solid #bb86fc',
-            padding: '16px',
-            color: '#ffffff',
-            background: '#272727'
-          },
-          iconTheme: {
-            primary: '#ffffff',
-            secondary: '#272727',
-          },
-        });
-        navigate(-1);
-      } catch (err) {
-        toast.error('Delete Failed!', {
-          style: {
-            border: '3px solid #bb86fc',
-            padding: '16px',
-            color: '#ffffff',
-            background: '#272727'
-          },
-          iconTheme: {
-            primary: '#ffffff',
-            secondary: '#272727',
-          },
-        });
-      }
+    try {
+      const headers = getAuthHeaders();
+      if (!headers) return;
+  
+      await axios.delete(
+        `${import.meta.env.VITE_API_BASE}/friends/transaction/${id}`,
+        { headers }
+      );
+  
+      toast.success("Deleted Transaction!", {
+        style: {
+          border: "3px solid #bb86fc",
+          padding: "16px",
+          color: "#ffffff",
+          background: "#272727",
+        },
+        iconTheme: {
+          primary: "#ffffff",
+          secondary: "#272727",
+        },
+      });
+  
+      navigate(-1);
+    } catch (err) {
+      toast.error("Delete Failed!", {
+        style: {
+          border: "3px solid #bb86fc",
+          padding: "16px",
+          color: "#ffffff",
+          background: "#272727",
+        },
+      });
     }
   };
 
@@ -249,7 +246,7 @@ function TransactionPage() {
         <div className="transaction-actions">
           <button className="btn-secondary" onClick={goBack}>Back</button>
           <button className="btn-primary" onClick={() => setIsEditing(true)}>Edit</button>
-          <button className="btn-danger" onClick={deleteTransaction}>Delete</button>
+          <button className="btn-danger" onClick={() => setDeleteModalOpen(true)}>Delete</button>
         </div>
 
       </div>
@@ -316,7 +313,40 @@ function TransactionPage() {
 
 </form>
   )}
+{deleteModalOpen && (
+  <div className="modal-overlay">
+    <div className="confirm-modal">
 
+      <h3>Delete Transaction</h3>
+
+      <p>
+        Are you sure you want to delete this transaction?
+      </p>
+
+      <div className="modal-actions">
+
+        <button
+          className="btn-secondary"
+          onClick={() => setDeleteModalOpen(false)}
+        >
+          Cancel
+        </button>
+
+        <button
+          className="btn-danger"
+          onClick={() => {
+            setDeleteModalOpen(false);
+            deleteTransaction();
+          }}
+        >
+          Delete
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+)}
 </div>
   );
 }
