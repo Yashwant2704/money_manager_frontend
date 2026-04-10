@@ -29,7 +29,6 @@ function Login() {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
-      console.log(JSON.stringify(data.user));
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 

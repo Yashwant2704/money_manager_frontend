@@ -35,18 +35,21 @@
 
 .modal-content {
   background: #272727;
+  border: 2px solid #831dff90;
   padding: 25px;
   border-radius: 10px;
   width: 320px;
 }
-
+.modal-content h3 {
+  text-align: center;
+  margin-top: 5px;
+}
 .upi-input {
   width: 100%;
   padding: 8px;
   margin-top: 10px;
   margin-bottom: 16px;
   border-radius: 6px;
-  border: 1px solid #555;
   background: #1e1e1e;
   color: white;
 }

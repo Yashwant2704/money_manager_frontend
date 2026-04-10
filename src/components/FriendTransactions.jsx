@@ -18,7 +18,7 @@ function FriendTransactions() {
           </tr>
         </thead>
         <tbody>
-          {friend.transactions.map((txn) => (
+          {friend.transactions.filter(txn => !txn.mirrored).map((txn) => (
             <tr
               key={txn._id}
               onClick={() => navigate(`/transaction/${txn._id}`)}

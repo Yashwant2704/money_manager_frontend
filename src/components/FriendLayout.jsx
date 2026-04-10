@@ -121,6 +121,7 @@ function FriendLayout() {
           <NavLink to="transactions">Transactions</NavLink>
           <NavLink to="settle">Settle</NavLink>
           <NavLink to="share">Share</NavLink>
+          <NavLink to="shared">Shared</NavLink>
         </div>
 
         <div className="friend-content">

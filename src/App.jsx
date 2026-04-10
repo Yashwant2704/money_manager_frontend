@@ -20,6 +20,7 @@ import CoinLoader from "./components/CoinLoader";
 import "./App.css";
 import AdminApp from "./pages/AdminApp";
 import TestPage from "./pages/TestPage";
+import SharedTransactions from "./components/SharedTransactions";
 
 function App() {
   const navigate = useNavigate();
@@ -75,6 +76,7 @@ function App() {
           <Route path="transactions" element={<FriendTransactions />} />
           <Route path="settle" element={<FriendSettle />} />
           <Route path="share" element={<FriendShare />} />
+          <Route path="shared" element={<SharedTransactions />} />
         </Route>
         <Route path="/transaction/:id" element={<TransactionPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
