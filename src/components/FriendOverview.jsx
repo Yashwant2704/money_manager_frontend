@@ -27,7 +27,19 @@ function FriendOverview() {
   /* ---------------- SINGLE TRANSACTION ---------------- */
 
   const handleSingle = async (value) => {
-    if (!amount) return toast.error("Enter amount");
+    if (!amount) return toast.error("Enter Amount",
+      {
+        style: {
+          border: '3px solid #bb86fc',
+          padding: '16px',
+          color: '#ffffff',
+          background: '#272727'
+        },
+        iconTheme: {
+          primary: '#bb86fc',
+          secondary: '#272727',
+        },
+      });
 
     try {
       setLoading(true);
@@ -46,7 +58,19 @@ function FriendOverview() {
       refresh();
     } catch (err) {
       console.error(err);
-      toast.error("Transaction failed");
+      toast.error("Transaction Failed",
+      {
+        style: {
+          border: '3px solid #bb86fc',
+          padding: '16px',
+          color: '#ffffff',
+          background: '#272727'
+        },
+        iconTheme: {
+          primary: '#bb86fc',
+          secondary: '#272727',
+        },
+      });
     } finally {
       setLoading(false);
     }
@@ -63,7 +87,19 @@ function FriendOverview() {
       }));
 
     if (!transactions.length) {
-      return toast.error("Enter at least one amount");
+      return toast.error("Enter atleast one amount",
+      {
+        style: {
+          border: '3px solid #bb86fc',
+          padding: '16px',
+          color: '#ffffff',
+          background: '#272727'
+        },
+        iconTheme: {
+          primary: '#bb86fc',
+          secondary: '#272727',
+        },
+      });
     }
 
     try {
@@ -79,7 +115,19 @@ function FriendOverview() {
       refresh();
     } catch (err) {
       console.error(err);
-      toast.error("Transaction failed");
+      toast.error("Transaction Failed",
+      {
+        style: {
+          border: '3px solid #bb86fc',
+          padding: '16px',
+          color: '#ffffff',
+          background: '#272727'
+        },
+        iconTheme: {
+          primary: '#bb86fc',
+          secondary: '#272727',
+        },
+      });
     } finally {
       setLoading(false);
     }
@@ -188,10 +236,8 @@ function FriendOverview() {
               <table style={{ width: "100%", marginBottom: "10px" }}>
                 <thead>
                   <tr>
-                    <th style={{ width: "150px", textAlign: "left" }}>
-                      Amount
-                    </th>
-                    <th style={{ textAlign: "left" }}>Note</th>
+                    <th style={{ width: "150px", textAlign: "left" }}></th>
+                    <th style={{ textAlign: "left" }}></th>
                     <th style={{ width: "50px" }}></th>
                   </tr>
                 </thead>
@@ -222,7 +268,9 @@ function FriendOverview() {
                           }
                         />
                       </td>
-
+                      {/* <td>
+                        <span>Is Negative</span>
+                      </td> */}
                       <td>
                         <button
                           onClick={() => removeRow(index)}
@@ -240,31 +288,32 @@ function FriendOverview() {
                   ))}
                 </tbody>
               </table>
-
-              <button
-                className="btn"
-                style={{ marginBottom: "10px" }}
-                onClick={addRow}
-              >
-                + Add Row
-              </button>
-
-              <div className="transaction-buttons">
+              <div className="btn-grp">
                 <button
-                  className="btn add-btn"
-                  disabled={loading}
-                  onClick={() => handleMulti("add")}
+                  className="btn"
+                  style={{ marginBottom: "10px" }}
+                  onClick={addRow}
                 >
-                  I paid
+                  + Add Row
                 </button>
 
+                <div className="transaction-buttons">
+                  <button
+                    className="btn add-btn"
+                    disabled={loading}
+                    onClick={() => handleMulti("add")}
+                  >
+                    Submit
+                  </button>
+                </div>
+                {/* 
                 <button
                   className="btn subtract-btn"
                   disabled={loading}
                   onClick={() => handleMulti("subtract")}
                 >
                   They paid
-                </button>
+                </button> */}
               </div>
             </>
           )}

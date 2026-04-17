@@ -37,8 +37,8 @@
 }
 
 .mode-toggle .active-label {
-  font-weight: 600;
-  color: #333;
+  /* font-weight: 600; */
+  color: #BB86FC;
 }
 
 /* Switch container */
@@ -86,4 +86,10 @@
 
 .switch input:checked + .slider:before {
   transform: translateX(20px);
+}
+
+.btn-grp{
+  display: flex;
+  gap: 10px;
+  /* justify-content: center; */
 }
