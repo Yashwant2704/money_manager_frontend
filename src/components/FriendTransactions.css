@@ -12,3 +12,29 @@
 .transactions-table tr:hover {
   background: rgba(187, 134, 252, 0.08);
 }
+.scroll-buttons {
+  position: fixed;
+  right: 20px;
+  bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.scroll-btn {
+  border: 2px solid #BB86FC;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #333;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-btn:hover {
+  background: #555;
+}
