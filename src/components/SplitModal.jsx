@@ -10,6 +10,7 @@ const SplitModal = ({ isOpen, onClose, onSubmit, friends, upiId }) => {
   const [loading, setLoading] = useState(false);
 
   const [activeTab, setActiveTab] = useState("split");
+  const [showQrPopup, setShowQrPopup] = useState(false);
 
   const [qrAmount, setQrAmount] = useState("");
   const [qrNote, setQrNote] = useState("");
@@ -90,30 +91,31 @@ const SplitModal = ({ isOpen, onClose, onSubmit, friends, upiId }) => {
       toast.error("UPI ID not configured");
       return;
     }
-
+  
     if (!qrAmount || !qrPeople || parseInt(qrPeople) <= 0) {
       toast.error("Enter valid amount and number of people");
       return;
     }
-
+  
     const perPerson = (parseFloat(qrAmount) / parseInt(qrPeople)).toFixed(2);
-
+  
     const tnNote = qrNote
       ? encodeURIComponent(qrNote)
       : "Split Payment";
-
+  
     const upiUrl =
       `upi://pay?pa=${upiId}` +
       `&am=${perPerson}` +
       `&cu=INR` +
       `&tn=${tnNote}`;
-
+  
     const qrImageUrl =
       "https://api.qrserver.com/v1/create-qr-code/" +
-      "?size=220x220&data=" +
+      "?size=240x240&data=" +
       encodeURIComponent(upiUrl);
-
+  
     setGeneratedQr(qrImageUrl);
+    setShowQrPopup(true);
   };
 
   const splitAmount = calculateSplit();
@@ -358,7 +360,7 @@ const SplitModal = ({ isOpen, onClose, onSubmit, friends, upiId }) => {
               Generate QR
             </button>
 
-            {generatedQr && (
+            {/* {generatedQr && (
               <div className="qr-preview">
 
                 <img
@@ -379,7 +381,38 @@ const SplitModal = ({ isOpen, onClose, onSubmit, friends, upiId }) => {
                 </p>
 
               </div>
-            )}
+            )} */}
+            {showQrPopup && (
+  <div
+    className="qr-popup-overlay"
+    onClick={() => setShowQrPopup(false)}
+  >
+    <div
+      className="qr-popup-content"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <button
+        className="qr-close-btn"
+        onClick={() => setShowQrPopup(false)}
+      >
+        ×
+      </button>
+
+      <h2 className="qr-title">Scan & Pay</h2>
+
+      <img
+        src={generatedQr}
+        alt="UPI QR Code"
+        className="qr-image"
+      />
+      <p>{upiId}</p>
+
+      <p className="qr-amount">
+        ₹{(qrAmount / qrPeople).toFixed(2)} per person
+      </p>
+    </div>
+  </div>
+)}
           </div>
         )}
       </div>
