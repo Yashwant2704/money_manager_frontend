@@ -410,6 +410,7 @@ const SplitModal = ({ isOpen, onClose, onSubmit, friends, upiId }) => {
       <p className="qr-amount">
         ₹{(qrAmount / qrPeople).toFixed(2)} per person
       </p>
+      {/* <p>Payment for {qrNote}</p> */}
     </div>
   </div>
 )}

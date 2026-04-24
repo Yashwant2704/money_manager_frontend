@@ -145,4 +145,153 @@
 }
 
 
+/* OVERLAY */
+.qr-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+
+  animation: fadeIn 0.25s ease;
+}
+
+/* POPUP */
+.qr-popup-content {
+  background: #1e1e2f;
+  padding: 25px;
+  border-radius: 18px;
+  width: 320px;
+  text-align: center;
+  position: relative;
+
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+
+  animation: scaleIn 0.3s ease;
+}
+
+/* CLOSE BUTTON */
+#qr-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  width: 36px;
+  height: 36px;
+
+  border-radius: 50%;
+  border: none;
+
+  background: rgba(255, 255, 255, 0.08);
+  color: #ccc;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  backdrop-filter: blur(6px);
+
+  transition: all 0.2s ease;
+}
+
+#qr-close-btn:hover {
+  background: #bb86fc;
+  color: #1f1b24;
+  transform: rotate(90deg) scale(1.1);
+}
+
+/* IMAGE */
+.qr-image-popup {
+  width: 220px;
+  height: 220px;
+  background: #fff;
+  padding: 12px;
+  border-radius: 12px;
+  border: 2px solid #BB86FC;
+
+  animation: popIn 0.4s ease;
+}
+
+/* TEXT */
+.qr-title {
+  color: #BB86FC;
+  margin-bottom: 15px;
+}
+
+.qr-amount {
+  margin-top: 10px;
+  color: #BB86FC;
+  font-weight: 600;
+}
+
+.qr-hint {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+/* OPEN ANIMATIONS */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.85) translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* CLOSE ANIMATIONS */
+
+.fade-out {
+  animation: fadeOut 0.25s ease forwards;
+}
+
+.scale-out {
+  animation: scaleOut 0.25s ease forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes scaleOut {
+  from {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.85) translateY(20px);
+    opacity: 0;
+  }
+}
