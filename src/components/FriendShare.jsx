@@ -141,6 +141,7 @@ function FriendShare() {
         </thead>
         <tbody>
           ${transactions
+            .filter(txn => !txn.mirrored)
             .map(
               (txn) => `
             <tr>
